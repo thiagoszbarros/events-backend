@@ -23,5 +23,10 @@ class AppServiceProvider extends ServiceProvider
             ->when(\App\Http\Controllers\EventController::class)
             ->needs(\App\Interfaces\CRUD::class)
             ->give(\App\Repositories\EventRepository::class);
+        $this->app
+            ->bind(
+                \App\Interfaces\SubscriberInterface::class,
+                \App\Repositories\SubscriberRepository::class
+            );
     }
 }
