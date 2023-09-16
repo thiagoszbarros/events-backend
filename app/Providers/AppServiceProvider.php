@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app
+            ->when(\App\Http\Controllers\EventController::class)
+            ->needs(\App\Interfaces\CRUD::class)
+            ->give(\App\Repositories\EventRepository::class);
     }
 }
