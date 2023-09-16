@@ -55,5 +55,6 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
         \App\Models\Event::factory()->count(5)->create();
+        \App\Models\Subscriber::factory()->count(5)->create();
     }
 }
