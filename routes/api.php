@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('events', App\Http\Controllers\EventController::class)->except(['show']);
+Route::apiResource('subscribers', App\Http\Controllers\SubscriberController::class)->only(['index', 'store']);
