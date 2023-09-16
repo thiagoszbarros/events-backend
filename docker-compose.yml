@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+    nginx:
+        container_name: nginx
+        image: nginx:alpine
+        restart: unless-stopped
+        depends_on:
+            - php
+        ports:
+            - 8001:80
+        working_dir: /var/www/app
+        volumes:
+            - ./:/var/www/app
+            - ./docker/nginx/:/etc/nginx/conf.d/
+    php:
+        container_name: php
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - 8080:8080
+            - 8000:8000
+        working_dir: /var/www/app
+        volumes:
+            - .:/var/www/app
+            - ./vendor:/var/www/app/vendor
+            - ./docker/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            - ./docker/php/conf.d/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+    postgres:
+        container_name: postgres
+        build:
+            context: ./docker/postgres
+            dockerfile: Dockerfile
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+        ports:
+            - 5433:5432
+        volumes:
+            - ./docker/postgres/database:/var/lib/postgresql/data
