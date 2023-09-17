@@ -19,4 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('events', App\Http\Controllers\EventController::class);
+Route::get('events/{event}/subscribers', [App\Http\Controllers\EventController::class, 'subscribers']);
+
 Route::apiResource('subscribers', App\Http\Controllers\SubscriberController::class)->only(['index', 'store']);

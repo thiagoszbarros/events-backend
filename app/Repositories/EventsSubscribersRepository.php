@@ -2,12 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\EventsSubscribersInterface;
+use App\Models\Subscriber;
 use App\Models\EventsSubscribers;
+use App\Interfaces\EventsSubscribersInterface;
 
 class EventsSubscribersRepository implements EventsSubscribersInterface
 {
-    public function __construct(private EventsSubscribers $eventSubscriber)
+    public function __construct(
+        private EventsSubscribers $eventSubscriber
+        )
     {
     }
 

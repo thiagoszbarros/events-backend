@@ -4,42 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PaginationRequest;
 use App\Http\Requests\SubscriberRequest;
 use App\Interfaces\EventsSubscribersInterface;
-use App\Interfaces\SubscriberInterface;
+use App\Interfaces\SubscriberRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 
 class SubscriberController extends Controller
 {
     public function __construct(
-        private SubscriberInterface $subscriber,
+        private SubscriberRepositoryInterface $subscriber,
         private EventsSubscribersInterface $eventSubscriber,
         private Log $log
     ) {
     }
 
-    public function index(PaginationRequest $request)
-    {
-        try {
-            return new Response(
-                [
-                    'data' => $this->subscriber->index($request->offset)
-                ],
-                Response::HTTP_OK
-            );
-        } catch (\Exception $e) {
-            $this->log::info($e);
-            return new Response(
-                [
-                    'data' => []
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
-    }
-
-    public function store(SubscriberRequest $request)
+    public function store(SubscriberRequest $request): Response
     {
         try {
             $subscriber = $this->subscriber->store($request);

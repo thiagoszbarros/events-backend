@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
             ->give(\App\Repositories\EventRepository::class);
         $this->app
             ->bind(
-                \App\Interfaces\SubscriberInterface::class,
+                \App\Interfaces\SubscriberRepositoryInterface::class,
                 \App\Repositories\SubscriberRepository::class
             );
         $this->app

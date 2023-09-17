@@ -3,21 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\CRUD;
+use Illuminate\Http\Response;
+use App\Http\Requests\EventRequest;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaginationRequest;
-use App\Http\Requests\EventRequest;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
+use App\Interfaces\SubscriberRepositoryInterface;
 
 class EventController extends Controller
 {
     public function __construct(
         private CRUD $event,
+        private SubscriberRepositoryInterface $subscriber,
         private Log $log
     ) {
     }
 
-    public function index(PaginationRequest $request)
+    public function index(PaginationRequest $request): Response
     {
         try {
             return new Response(
@@ -37,7 +39,7 @@ class EventController extends Controller
         }
     }
 
-    public function store(EventRequest $request)
+    public function store(EventRequest $request): Response
     {
         try {
             $this->event->store($request);
@@ -58,7 +60,7 @@ class EventController extends Controller
         }
     }
 
-    public function show(string $id)
+    public function show(string $id): Response
     {
         try {
             return new Response(
@@ -78,7 +80,7 @@ class EventController extends Controller
         }
     }
 
-    public function update(EventRequest $request, string $id)
+    public function update(EventRequest $request, string $id): Response
     {
         try {
             $this->event->update($id, $request);
@@ -99,7 +101,7 @@ class EventController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): Response
     {
         try {
             $this->event->delete($id);
@@ -114,6 +116,26 @@ class EventController extends Controller
             return new Response(
                 [
                     'data' => 'Não foi possível excluir o evento.',
+                ],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+    }
+
+    public function subscribers(PaginationRequest $request): Response
+    {
+        try {
+            return new Response(
+                [
+                    'data' => $this->subscriber->getByEventId($request->event_id)
+                ],
+                Response::HTTP_OK
+            );
+        } catch (\Exception $e) {
+            $this->log::info($e);
+            return new Response(
+                [
+                    'data' => []
                 ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
