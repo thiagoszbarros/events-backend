@@ -11,6 +11,7 @@ use App\Interfaces\SubscriberInterface;
 use App\Http\Requests\PaginationRequest;
 use App\Http\Requests\SubscriberRequest;
 use App\Http\Controllers\SubscriberController;
+use App\Models\Event;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SubscribersTest extends TestCase
@@ -36,7 +37,9 @@ class SubscribersTest extends TestCase
 
     public function test_store(): void
     {
+        $event_id = Event::factory()->create()->id;
         $response = $this->post('/api/subscribers', [
+            'event_id' => strval($event_id),
             'name' => fake()->name,
             'email' => fake()->safeEmail(),
             'cpf' => fake()->numerify('###########'),

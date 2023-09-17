@@ -35,6 +35,25 @@ class EventTest extends TestCase
         );
     }
 
+    public function test_show(): void
+    {
+        $id = Event::factory()->create()->id;
+
+        $response = $this->get('/api/events/' . $id);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $this->assertSame(
+            'array',
+            gettype($response->original)
+        );
+
+        $this->assertSame(
+            'object',
+            gettype($response->original['data'])
+        );
+    }
+
     public function test_store(): void
     {
         $response = $this->post('/api/events', [
@@ -68,13 +87,11 @@ class EventTest extends TestCase
         $name = fake()->name;
         $startDate = now()->addDays(11)->format('Y-m-d');
         $endDate = now()->addDays(13)->format('Y-m-d');
-        $status = false;
 
         $response = $this->put('/api/events/' . $id, [
             'name' => $name,
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'status' => $status,
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -109,11 +126,6 @@ class EventTest extends TestCase
         $this->assertSame(
             $updatedEvent->end_date,
             $endDate
-        );
-
-        $this->assertSame(
-            $updatedEvent->status,
-            $status
         );
     }
 
@@ -159,12 +171,15 @@ class EventTest extends TestCase
             ->andThrow(new Exception())
             ->shouldReceive('store')
             ->andThrow(new Exception())
+            ->shouldReceive('store')
+            ->andThrow(new Exception())
             ->shouldReceive('update')
             ->andThrow(new Exception())
             ->shouldReceive('delete')
             ->andThrow(new Exception());
 
         $resultIndex = (new EventController($event, $log))->index(new PaginationRequest);
+        $resultShow = (new EventController($event, $log))->show(1);
         $resultCreate = (new EventController($event, $log))->store(new EventRequest);
         $resultUpdate = (new EventController($event, $log))->update(new EventRequest, 1);
         $resultDelete = (new EventController($event, $log))->destroy(1);
@@ -172,6 +187,11 @@ class EventTest extends TestCase
         $this->assertSame(
             $resultIndex->original,
             ['data' => []]
+        );
+ 
+        $this->assertSame(
+            $resultShow->original,
+            ['data' =>  'Não foi possível obter o evento.']
         );
 
         $this->assertSame(

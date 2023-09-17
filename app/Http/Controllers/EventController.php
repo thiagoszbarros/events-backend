@@ -58,6 +58,26 @@ class EventController extends Controller
         }
     }
 
+    public function show(string $id)
+    {
+        try {
+            return new Response(
+                [
+                    'data' => $this->event->show($id),
+                ],
+                Response::HTTP_OK
+            );
+        } catch (\Exception $e) {
+            $this->log::info($e);
+            return new Response(
+                [
+                    'data' =>  'Não foi possível obter o evento.',
+                ],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+    }
+
     public function update(EventRequest $request, string $id)
     {
         try {

@@ -54,7 +54,14 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ]
         ]);
-        \App\Models\Event::factory()->count(5)->create();
-        \App\Models\Subscriber::factory()->count(5)->create();
+        \App\Models\Event::factory()
+            ->count(5)
+            ->create();
+        \App\Models\Subscriber::factory()
+            ->count(5)
+            ->create();
+        \App\Models\EventsSubscribers::factory()
+            ->count(50)
+            ->create();
     }
 }
