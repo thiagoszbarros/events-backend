@@ -5,18 +5,18 @@ namespace Tests\Feature;
 use Mockery;
 use Exception;
 use Tests\TestCase;
+use App\Models\Event;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use App\Interfaces\SubscriberInterface;
 use App\Http\Requests\PaginationRequest;
 use App\Http\Requests\SubscriberRequest;
 use App\Http\Controllers\SubscriberController;
-use App\Models\Event;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Interfaces\EventsSubscribersInterface;
 
 class SubscribersTest extends TestCase
 {
-    use DatabaseTransactions;
+    // use DatabaseTransactions;
 
     public function test_index(): void
     {
@@ -66,14 +66,15 @@ class SubscribersTest extends TestCase
     public function test_subscriber_controller_exceptions()
     {
         $subscriber = Mockery::mock(SubscriberInterface::class);
+        $eventSubscriber = Mockery::mock(EventsSubscribersInterface::class);
         $log = new Log();
         $subscriber->shouldReceive('index')
             ->andThrow(new Exception())
             ->shouldReceive('store')
             ->andThrow(new Exception());
 
-        $resultIndex = (new SubscriberController($subscriber, $log))->index(new PaginationRequest);
-        $resultCreate = (new SubscriberController($subscriber, $log))->store(new SubscriberRequest);
+        $resultIndex = (new SubscriberController($subscriber, $eventSubscriber, $log))->index(new PaginationRequest);
+        $resultCreate = (new SubscriberController($subscriber, $eventSubscriber, $log))->store(new SubscriberRequest);
 
         $this->assertSame(
             $resultIndex->original,

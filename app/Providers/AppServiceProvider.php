@@ -28,5 +28,10 @@ class AppServiceProvider extends ServiceProvider
                 \App\Interfaces\SubscriberInterface::class,
                 \App\Repositories\SubscriberRepository::class
             );
+        $this->app
+            ->bind(
+                \App\Interfaces\EventsSubscribersInterface::class,
+                \App\Repositories\EventsSubscribersRepository::class
+            );
     }
 }

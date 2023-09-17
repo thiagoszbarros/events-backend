@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaginationRequest;
 use App\Http\Requests\SubscriberRequest;
+use App\Interfaces\EventsSubscribersInterface;
 use App\Interfaces\SubscriberInterface;
 use Illuminate\Support\Facades\Log;
 
@@ -13,6 +14,7 @@ class SubscriberController extends Controller
 {
     public function __construct(
         private SubscriberInterface $subscriber,
+        private EventsSubscribersInterface $eventSubscriber,
         private Log $log
     ) {
     }
@@ -40,7 +42,15 @@ class SubscriberController extends Controller
     public function store(SubscriberRequest $request)
     {
         try {
-            $this->subscriber->store($request);
+            $subscriber = $this->subscriber->store($request);
+
+            $eventSubscriber = (object) [
+                'event_id' => $request->event_id,
+                'subscriber_id' => $subscriber->id
+            ];
+
+            $this->eventSubscriber->store($eventSubscriber);
+
             return new Response(
                 [
                     'data' => 'Subscrição realizada com sucesso.',
