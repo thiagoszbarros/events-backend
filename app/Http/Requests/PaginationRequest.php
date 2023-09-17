@@ -25,6 +25,10 @@ class PaginationRequest extends FormRequest
             'offset' => [
                 'sometimes',
                 'integer'
+            ],
+            'event_id' => [
+                'sometimes',
+                'integer'
             ]
         ];
     }

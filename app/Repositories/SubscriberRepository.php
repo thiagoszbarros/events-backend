@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\SubscriberInterface;
+use App\Interfaces\SubscriberRepositoryInterface;
 use App\Models\Subscriber;
 use Illuminate\Database\Eloquent\Collection;
 
-class SubscriberRepository implements SubscriberInterface
+class SubscriberRepository implements SubscriberRepositoryInterface
 {
 
     public function __construct(private Subscriber $subscriber)
@@ -25,5 +25,13 @@ class SubscriberRepository implements SubscriberInterface
             'email' => $subscriber->email,
             'cpf' => $subscriber->cpf,
         ]);
+    }
+
+    public function getByEventId(string $eventId, int $offset = null): Collection
+    {
+        return $this->subscriber::whereHas('events', function ($query) use ($eventId) {
+            $query->where('events.id', $eventId);
+        })->take($offset)
+            ->get();
     }
 }

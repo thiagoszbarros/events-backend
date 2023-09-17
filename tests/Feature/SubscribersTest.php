@@ -8,7 +8,7 @@ use Tests\TestCase;
 use App\Models\Event;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use App\Interfaces\SubscriberInterface;
+use App\Interfaces\SubscriberRepositoryInterface;
 use App\Http\Requests\PaginationRequest;
 use App\Http\Requests\SubscriberRequest;
 use App\Http\Controllers\SubscriberController;
@@ -65,7 +65,7 @@ class SubscribersTest extends TestCase
 
     public function test_subscriber_controller_exceptions()
     {
-        $subscriber = Mockery::mock(SubscriberInterface::class);
+        $subscriber = Mockery::mock(SubscriberRepositoryInterface::class);
         $eventSubscriber = Mockery::mock(EventsSubscribersInterface::class);
         $log = new Log();
         $subscriber->shouldReceive('index')
