@@ -30,11 +30,13 @@ class EventRequest extends FormRequest
                 'required',
                 'date',
                 'date_format:Y-m-d',
+                'after_or_equal:today'
             ],
             'end_date' => [
                 'required',
                 'date',
                 'date_format:Y-m-d',
+                'after_or_equal:start_date'
             ]
         ];
     }

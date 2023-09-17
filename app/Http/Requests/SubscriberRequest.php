@@ -22,6 +22,10 @@ class SubscriberRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'event_id' => [
+                'required',
+                'string',
+            ],
             'name' => [
                 'required',
                 'string'

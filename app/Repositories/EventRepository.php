@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\CRUD;
 use App\Models\Event;
+use Carbon\Carbon;
 
 class EventRepository implements CRUD
 {
@@ -18,13 +19,18 @@ class EventRepository implements CRUD
             ->get();
     }
 
+    public function show(string $id)
+    {
+        return $this->event->find($id);
+    }
+
     public function store(object $event)
     {
         return $this->event->create([
             'name' => $event->name,
-            'start_date' => $event->start_date,
-            'end_date' => $event->end_date,
-            'status' => $event->status
+            'start_date' => Carbon::createFromFormat('Y-m-d', $event->start_date),
+            'end_date' => Carbon::createFromFormat('Y-m-d', $event->end_date),
+            'status' => 1
         ]);
     }
 
@@ -32,9 +38,8 @@ class EventRepository implements CRUD
     {
         $this->event->find($id)->update([
             'name' => $event->name,
-            'start_date' => $event->start_date,
-            'end_date' => $event->end_date,
-            'status' => $event->status
+            'start_date' => Carbon::createFromFormat('Y-m-d', $event->start_date),
+            'end_date' => Carbon::createFromFormat('Y-m-d', $event->end_date),
         ]);
     }
 
