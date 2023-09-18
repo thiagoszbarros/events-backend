@@ -6,6 +6,13 @@
 
 3. Abra um terminal e navegue até o diretório raiz do projeto.
 
+4. Execute o seguinte comando para configurar as variáveis de ambiente:
+
+    ````
+    cp .env.example .env
+    ````
+    Isso criará um ambiente de desenvolvimento contido em contêineres Docker.
+
 4. Execute o seguinte comando para configurar e iniciar o projeto:
 
     ````
@@ -13,7 +20,19 @@
     ````
     Isso criará um ambiente de desenvolvimento contido em contêineres Docker.
 
-5. Execute migrações e sementes do Laravel para configurar o banco de dados:
+4. Execute o seguinte comando para configurar as dependências:
+
+    ````
+    docker exec php composer install
+    ````
+    Isso criará um ambiente de desenvolvimento contido em contêineres Docker.
+
+5. Gere a chave da aplicação:
+
+    ````
+    docker exec php php artisan key:generate
+    ````
+5. Execute as migrations e seeds do Laravel para configurar o banco de dados:
 
     ````
     docker exec php php artisan migrate --seed
@@ -21,9 +40,16 @@
 
     Isso criará tabelas no banco de dados e preencherá com dados de teste.
 
+5. Configure o git para ignorar permissões:
+
+    ````
+    git config core.fileMode false
+    ````
+
+
 6. Configure as permissões de arquivo do diretório de armazenamento com o seguinte comando:
     ````
-    sudo chmod -R 770 storage
+    sudo chmod -R 777 storage
     ````
 
     Isso garantirá que o Laravel tenha as permissões corretas para acessar o diretório de armazenamento.
