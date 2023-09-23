@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\SubscriberRequest;
 use App\Interfaces\EventsSubscribersRepositoryInterface;
 use App\Services\SubscriberService;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class SubscriberController extends Controller
@@ -29,6 +28,7 @@ class SubscriberController extends Controller
             );
         } catch (\Exception $e) {
             $this->log::info($e);
+
             return new Response(
                 [
                     'data' => 'Não foi possível realizar a subscrição.',

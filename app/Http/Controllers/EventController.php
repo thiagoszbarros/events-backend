@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Response;
 use App\Http\Requests\EventRequest;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\SubscribersRequest;
 use App\Interfaces\EventRepositoryInterface;
 use App\Interfaces\SubscriberRepositoryInterface;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
@@ -24,15 +23,16 @@ class EventController extends Controller
         try {
             return new Response(
                 [
-                    'data' => $this->event->index()
+                    'data' => $this->event->index(),
                 ],
                 Response::HTTP_OK
             );
         } catch (\Exception $e) {
             $this->log::info($e);
+
             return new Response(
                 [
-                    'data' => []
+                    'data' => [],
                 ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
@@ -44,6 +44,7 @@ class EventController extends Controller
         try {
             $this->event
                 ->store($request);
+
             return new Response(
                 [
                     'data' => 'Evento criado com sucesso.',
@@ -52,6 +53,7 @@ class EventController extends Controller
             );
         } catch (\Exception $e) {
             $this->log::info($e);
+
             return new Response(
                 [
                     'data' => 'Não foi possível criar o evento.',
@@ -73,9 +75,10 @@ class EventController extends Controller
             );
         } catch (\Exception $e) {
             $this->log::info($e);
+
             return new Response(
                 [
-                    'data' =>  'Não foi possível obter o evento.',
+                    'data' => 'Não foi possível obter o evento.',
                 ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
@@ -87,6 +90,7 @@ class EventController extends Controller
         try {
             $this->event
                 ->update($id, $request);
+
             return new Response(
                 [
                     'data' => 'Evento atualizado com sucesso.',
@@ -95,6 +99,7 @@ class EventController extends Controller
             );
         } catch (\Exception $e) {
             $this->log::info($e);
+
             return new Response(
                 [
                     'data' => 'Não foi possível atualizar o evento.',
@@ -109,6 +114,7 @@ class EventController extends Controller
         try {
             $this->event
                 ->delete($id);
+
             return new Response(
                 [
                     'data' => 'Evento excluído com sucesso.',
@@ -117,6 +123,7 @@ class EventController extends Controller
             );
         } catch (\Exception $e) {
             $this->log::info($e);
+
             return new Response(
                 [
                     'data' => 'Não foi possível excluir o evento.',
@@ -131,15 +138,16 @@ class EventController extends Controller
         try {
             return new Response(
                 [
-                    'data' => $this->subscriber->getByEventId($request->event_id)
+                    'data' => $this->subscriber->getByEventId($request->event_id),
                 ],
                 Response::HTTP_OK
             );
         } catch (\Exception $e) {
             $this->log::info($e);
+
             return new Response(
                 [
-                    'data' => []
+                    'data' => [],
                 ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );

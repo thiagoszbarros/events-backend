@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Http\Requests\SubscriberRequest;
 use App\Contracts\Subscriber\CreateEventSubscriberContract;
 use App\Enums\Errors;
+use App\Http\Requests\SubscriberRequest;
 use App\Interfaces\EventRepositoryInterface;
 use App\Interfaces\EventsSubscribersRepositoryInterface;
 use App\Interfaces\SubscriberRepositoryInterface;
@@ -23,6 +23,7 @@ class SubscriberService
     {
         $event = $this->event
             ->find($request->event_id);
+
         $subscriber = $this->subscriber
             ->store($request);
 
@@ -33,7 +34,7 @@ class SubscriberService
                 $subscriber->id
             );
 
-        if (!$contractValidation->isValid) {
+        if (! $contractValidation->isValid) {
             return $contractValidation->errors[Errors::FIRST->position()];
         }
 

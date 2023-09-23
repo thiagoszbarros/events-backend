@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\EventsSubscribers;
 use App\Interfaces\EventsSubscribersRepositoryInterface;
+use App\Models\EventsSubscribers;
 
 class EventsSubscribersRepository implements EventsSubscribersRepositoryInterface
 {
@@ -15,7 +15,7 @@ class EventsSubscribersRepository implements EventsSubscribersRepositoryInterfac
     public function findByEventIdAndSubscriverId(
         $eventId,
         $subscriberId
-    ): object|null {
+    ): ?object {
         return $this->eventSubscriber
             ->whereEventIdAndSubscriberId(
                 $eventId,
@@ -31,7 +31,7 @@ class EventsSubscribersRepository implements EventsSubscribersRepositoryInterfac
         $this->eventSubscriber::create(
             [
                 'event_id' => $eventId,
-                'subscriber_id' => $subscriberId
+                'subscriber_id' => $subscriberId,
             ]
         );
     }

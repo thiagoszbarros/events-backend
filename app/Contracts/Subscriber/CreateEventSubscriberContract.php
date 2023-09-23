@@ -24,6 +24,7 @@ class CreateEventSubscriberContract extends Contract
         $this->eventStatusShouldBeActive(
             status: $status
         );
+
         $this->isAlreadySubscribed(
             eventId: $eventId,
             subscriberId: $subscriberId
@@ -34,7 +35,7 @@ class CreateEventSubscriberContract extends Contract
 
     private function eventStatusShouldBeActive(bool $status): void
     {
-        if (!$status) {
+        if (! $status) {
             $this->isValid = false;
             array_push($this->errors, 'Evento inativo. Inscrição não realizada.');
         }

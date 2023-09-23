@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class SubscriberRepository implements SubscriberRepositoryInterface
 {
-
     public function __construct(
         private Subscriber $subscriber
     ) {
@@ -18,7 +17,7 @@ class SubscriberRepository implements SubscriberRepositoryInterface
     {
         return $this->subscriber::firstOrCreate(
             [
-                'email' => $subscriber->email
+                'email' => $subscriber->email,
             ],
             [
                 'name' => $subscriber->name,

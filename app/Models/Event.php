@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Event extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
     public function subscribers(): BelongsToMany

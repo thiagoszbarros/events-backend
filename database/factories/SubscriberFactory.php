@@ -19,7 +19,7 @@ class SubscriberFactory extends Factory
         return [
             'name' => fake()->name,
             'email' => fake()->safeEmail(),
-            'cpf' => fake()->numerify('###########')
+            'cpf' => fake()->numerify('###########'),
         ];
     }
 }

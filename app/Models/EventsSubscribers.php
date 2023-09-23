@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class EventsSubscribers extends Pivot
 {
     use HasFactory;
+
     protected $table = 'events_subscribers';
 }

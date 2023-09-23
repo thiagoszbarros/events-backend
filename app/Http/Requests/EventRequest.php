@@ -24,20 +24,20 @@ class EventRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'string'
+                'string',
             ],
             'start_date' => [
                 'required',
                 'date',
                 'date_format:Y-m-d',
-                'after_or_equal:today'
+                'after_or_equal:today',
             ],
             'end_date' => [
                 'required',
                 'date',
                 'date_format:Y-m-d',
-                'after_or_equal:start_date'
-            ]
+                'after_or_equal:start_date',
+            ],
         ];
     }
 }

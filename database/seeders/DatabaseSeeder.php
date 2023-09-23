@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
                 'status' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ]);
         \App\Models\Event::factory()
             ->count(5)
