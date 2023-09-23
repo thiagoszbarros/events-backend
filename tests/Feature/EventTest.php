@@ -6,11 +6,10 @@ use Mockery;
 use Exception;
 use Tests\TestCase;
 use App\Models\Event;
-use App\Interfaces\CRUD;
+use App\Interfaces\EventRepositoryInterface;
 use Illuminate\Http\Response;
 use App\Http\Requests\EventRequest;
 use Illuminate\Support\Facades\Log;
-use App\Http\Requests\PaginationRequest;
 use App\Http\Controllers\EventController;
 use App\Interfaces\SubscriberRepositoryInterface;
 use App\Models\EventsSubscribers;
@@ -196,7 +195,7 @@ class EventTest extends TestCase
 
     public function test_event_controller_exceptions()
     {
-        $event = Mockery::mock(CRUD::class);
+        $event = Mockery::mock(EventRepositoryInterface::class);
         $subscriber = Mockery::mock(SubscriberRepositoryInterface::class);
         $log = new Log();
         $event->shouldReceive('index')
@@ -210,7 +209,7 @@ class EventTest extends TestCase
             ->shouldReceive('delete')
             ->andThrow(new Exception());
 
-        $resultIndex = (new EventController($event, $subscriber,  $log))->index(new PaginationRequest);
+        $resultIndex = (new EventController($event, $subscriber,  $log))->index();
         $resultShow = (new EventController($event, $subscriber, $log))->show(1);
         $resultCreate = (new EventController($event, $subscriber, $log))->store(new EventRequest);
         $resultUpdate = (new EventController($event, $subscriber, $log))->update(new EventRequest, 1);

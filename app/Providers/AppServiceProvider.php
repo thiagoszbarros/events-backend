@@ -20,9 +20,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app
-            ->when(\App\Http\Controllers\EventController::class)
-            ->needs(\App\Interfaces\CRUD::class)
-            ->give(\App\Repositories\EventRepository::class);
+            ->bind(
+                \App\Interfaces\EventRepositoryInterface::class,
+                \App\Repositories\EventRepository::class
+            );
         $this->app
             ->bind(
                 \App\Interfaces\SubscriberRepositoryInterface::class,
@@ -30,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
             );
         $this->app
             ->bind(
-                \App\Interfaces\EventsSubscribersInterface::class,
+                \App\Interfaces\EventsSubscribersRepositoryInterface::class,
                 \App\Repositories\EventsSubscribersRepository::class
             );
     }
