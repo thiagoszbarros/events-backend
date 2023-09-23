@@ -13,4 +13,6 @@ interface EventRepositoryInterface
     public function update(string $id, object $event): void;
 
     public function delete(string $id): void;
+
+    public function hasDateConflict($event_id);
 }
