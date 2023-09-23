@@ -58,4 +58,26 @@ class EventRepository implements EventRepositoryInterface
     {
         $this->event->destroy($id);
     }
+
+    public function hasDateConflict($event_id): bool
+    {
+        $eventToCheck = $this->event::find($event_id);
+
+        return $this->event::where('id', '<>', $event_id)
+            ->where(function ($query) use ($eventToCheck) {
+                $query->where(function ($q) use ($eventToCheck) {
+                    $q->where('start_date', '>=', $eventToCheck->start_date)
+                        ->where('start_date', '<', $eventToCheck->end_date);
+                })
+                    ->orWhere(function ($q) use ($eventToCheck) {
+                        $q->where('end_date', '>', $eventToCheck->start_date)
+                            ->where('end_date', '<=', $eventToCheck->end_date);
+                    })
+                    ->orWhere(function ($q) use ($eventToCheck) {
+                        $q->where('start_date', '<=', $eventToCheck->start_date)
+                            ->where('end_date', '>=', $eventToCheck->end_date);
+                    });
+            })
+            ->exists();
+    }
 }
