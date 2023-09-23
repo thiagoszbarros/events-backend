@@ -64,7 +64,7 @@ jobs:
           DB_PORT: ${{ job.services.postgres.ports[5432] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
-      - name: Test with pest
+      - name: Test with PHPUnit
         run: php artisan test --coverage
         env:
           DB_PORT: ${{ job.services.postgres.ports[5432] }}
