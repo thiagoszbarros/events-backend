@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CPF;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SubscriberRequest extends FormRequest
@@ -23,20 +24,26 @@ class SubscriberRequest extends FormRequest
     {
         return [
             'event_id' => [
+                'bail',
                 'required',
                 'string',
             ],
             'name' => [
+                'bail',
                 'required',
                 'string'
             ],
             'email' => [
+                'bail',
                 'required',
                 'email',
             ],
             'cpf' => [
+                'bail',
                 'required',
-                'numeric'
+                'numeric',
+                'digits:11',
+                new CPF
             ]
         ];
     }
