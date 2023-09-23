@@ -5,34 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubscriberRequest;
-use App\Interfaces\EventsSubscribersInterface;
-use App\Interfaces\SubscriberRepositoryInterface;
+use App\Interfaces\EventsSubscribersRepositoryInterface;
+use App\Services\SubscriberService;
 use Illuminate\Support\Facades\Log;
 
 class SubscriberController extends Controller
 {
     public function __construct(
-        private SubscriberRepositoryInterface $subscriber,
-        private EventsSubscribersInterface $eventSubscriber,
-        private Log $log
+        private SubscriberService $subscriber,
+        private EventsSubscribersRepositoryInterface $eventSubscriber,
+        private Log $log,
     ) {
     }
 
     public function store(SubscriberRequest $request): Response
     {
         try {
-            $subscriber = $this->subscriber->store($request);
-
-            $eventSubscriber = (object) [
-                'event_id' => $request->event_id,
-                'subscriber_id' => $subscriber->id
-            ];
-
-            $this->eventSubscriber->store($eventSubscriber);
-
             return new Response(
                 [
-                    'data' => 'Subscrição realizada com sucesso.',
+                    'data' => $this->subscriber->create($request),
                 ],
                 Response::HTTP_CREATED
             );

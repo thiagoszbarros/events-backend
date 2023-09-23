@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\CRUD;
 use Illuminate\Http\Response;
 use App\Http\Requests\EventRequest;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PaginationRequest;
+use App\Http\Requests\SubscribersRequest;
+use App\Interfaces\EventRepositoryInterface;
 use App\Interfaces\SubscriberRepositoryInterface;
 
 class EventController extends Controller
 {
     public function __construct(
-        private CRUD $event,
+        private EventRepositoryInterface $event,
         private SubscriberRepositoryInterface $subscriber,
         private Log $log
     ) {
     }
 
-    public function index(PaginationRequest $request): Response
+    public function index(): Response
     {
         try {
             return new Response(
                 [
-                    'data' => $this->event->index($request->offset)
+                    'data' => $this->event->index()
                 ],
                 Response::HTTP_OK
             );
@@ -42,7 +42,8 @@ class EventController extends Controller
     public function store(EventRequest $request): Response
     {
         try {
-            $this->event->store($request);
+            $this->event
+                ->store($request);
             return new Response(
                 [
                     'data' => 'Evento criado com sucesso.',
@@ -65,7 +66,8 @@ class EventController extends Controller
         try {
             return new Response(
                 [
-                    'data' => $this->event->show($id),
+                    'data' => $this->event
+                        ->find($id),
                 ],
                 Response::HTTP_OK
             );
@@ -83,7 +85,8 @@ class EventController extends Controller
     public function update(EventRequest $request, string $id): Response
     {
         try {
-            $this->event->update($id, $request);
+            $this->event
+                ->update($id, $request);
             return new Response(
                 [
                     'data' => 'Evento atualizado com sucesso.',
@@ -104,7 +107,8 @@ class EventController extends Controller
     public function destroy($id): Response
     {
         try {
-            $this->event->delete($id);
+            $this->event
+                ->delete($id);
             return new Response(
                 [
                     'data' => 'Evento excluído com sucesso.',
@@ -122,7 +126,7 @@ class EventController extends Controller
         }
     }
 
-    public function subscribers(PaginationRequest $request): Response
+    public function subscribers(SubscribersRequest $request): Response
     {
         try {
             return new Response(

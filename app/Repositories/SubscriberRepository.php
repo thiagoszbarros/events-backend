@@ -9,29 +9,31 @@ use Illuminate\Database\Eloquent\Collection;
 class SubscriberRepository implements SubscriberRepositoryInterface
 {
 
-    public function __construct(private Subscriber $subscriber)
-    {
-    }
-    public function index($offset = null): Collection
-    {
-        return $this->subscriber::take($offset)
-            ->get();
+    public function __construct(
+        private Subscriber $subscriber
+    ) {
     }
 
     public function store($subscriber): Subscriber
     {
-        return $this->subscriber::create([
-            'name' => $subscriber->name,
-            'email' => $subscriber->email,
-            'cpf' => $subscriber->cpf,
-        ]);
+        return $this->subscriber::firstOrCreate(
+            [
+                'email' => $subscriber->email
+            ],
+            [
+                'name' => $subscriber->name,
+                'cpf' => $subscriber->cpf,
+            ]
+        );
     }
 
-    public function getByEventId(string $eventId, int $offset = null): Collection
+    public function getByEventId(string $eventId): Collection
     {
-        return $this->subscriber::whereHas('events', function ($query) use ($eventId) {
-            $query->where('events.id', $eventId);
-        })->take($offset)
-            ->get();
+        return $this->subscriber::whereHas(
+            'events',
+            function ($query) use ($eventId) {
+                $query->where('events.id', $eventId);
+            }
+        )->get();
     }
 }

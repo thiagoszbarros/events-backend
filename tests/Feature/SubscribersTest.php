@@ -10,7 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\SubscriberRequest;
 use App\Http\Controllers\SubscriberController;
-use App\Interfaces\EventsSubscribersInterface;
+use App\Interfaces\EventsSubscribersRepositoryInterface;
 use App\Interfaces\SubscriberRepositoryInterface;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -49,7 +49,7 @@ class SubscribersTest extends TestCase
     public function test_subscriber_controller_exceptions()
     {
         $subscriber = Mockery::mock(SubscriberRepositoryInterface::class);
-        $eventSubscriber = Mockery::mock(EventsSubscribersInterface::class);
+        $eventSubscriber = Mockery::mock(EventsSubscribersRepositoryInterface::class);
         $log = new Log();
         $subscriber->shouldReceive('index')
             ->andThrow(new Exception())
