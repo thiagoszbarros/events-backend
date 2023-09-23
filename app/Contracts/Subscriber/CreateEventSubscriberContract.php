@@ -5,13 +5,11 @@ namespace App\Contracts\Subscriber;
 use App\Contracts\Contract;
 use App\Interfaces\EventRepositoryInterface;
 use App\Interfaces\EventsSubscribersRepositoryInterface;
-use App\Interfaces\SubscriberRepositoryInterface;
 
 class CreateEventSubscriberContract extends Contract
 {
     public function __construct(
         protected EventsSubscribersRepositoryInterface $eventsSubscribers,
-        protected SubscriberRepositoryInterface $subscriber,
         protected EventRepositoryInterface $event
     ) {
         parent::__construct();
@@ -44,7 +42,7 @@ class CreateEventSubscriberContract extends Contract
 
     private function eventStatusShouldBeActive(bool $status): void
     {
-        if (!$status) {
+        if (! $status) {
             $this->isValid = false;
             array_push($this->errors, 'Inscrição não realizada pois o evento está inativo.');
         }
