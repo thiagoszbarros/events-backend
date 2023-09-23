@@ -8,6 +8,8 @@ use App\Http\Requests\SubscriberRequest;
 use App\Interfaces\EventRepositoryInterface;
 use App\Interfaces\EventsSubscribersRepositoryInterface;
 use App\Interfaces\SubscriberRepositoryInterface;
+use App\Shared\Dtos\ResultDto;
+use stdClass;
 
 class SubscriberService
 {
@@ -19,7 +21,7 @@ class SubscriberService
     ) {
     }
 
-    public function create(SubscriberRequest $request): string
+    public function create(SubscriberRequest $request): object
     {
         $event = $this->event
             ->find($request->event_id);
@@ -34,8 +36,8 @@ class SubscriberService
                 $subscriber->id
             );
 
-        if (! $contractValidation->isValid) {
-            return $contractValidation->errors[Errors::FIRST->position()];
+        if (!$contractValidation->isValid) {
+            return new ResultDto($contractValidation->errors[Errors::FIRST->position()], 422);
         }
 
         $this->eventsSubscribers->store(
@@ -43,6 +45,6 @@ class SubscriberService
             $subscriber->id
         );
 
-        return 'Inscrição realizada com sucesso.';
+        return new ResultDto('Inscrição realizada com sucesso.', 201);
     }
 }
