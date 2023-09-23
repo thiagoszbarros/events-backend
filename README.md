@@ -54,7 +54,7 @@
 
     Isso garantirá que o Laravel tenha as permissões corretas para acessar o diretório de armazenamento.
 
-7. Agora, seu aplicativo Laravel está pronto para ser acessado. Abra seu navegador e acesse `http://localhost:8001` para visualizar seu aplicativo em ação.
+7. Abra seu navegador e acesse `http://localhost:8001` para visualizar o Laravel aplicativo em ação.
 
 8. Comece a desenvolver! Faça alterações no código-fonte e veja-as refletidas em seu ambiente de desenvolvimento local.
 
