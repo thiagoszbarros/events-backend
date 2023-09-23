@@ -9,10 +9,12 @@ use App\Models\Event;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\SubscriberRequest;
+use Avlima\PhpCpfCnpjGenerator\Generator;
 use App\Http\Controllers\SubscriberController;
-use App\Interfaces\EventsSubscribersRepositoryInterface;
 use App\Interfaces\SubscriberRepositoryInterface;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Interfaces\EventsSubscribersRepositoryInterface;
+use App\Services\SubscriberService;
 
 class SubscribersTest extends TestCase
 {
@@ -25,7 +27,7 @@ class SubscribersTest extends TestCase
             'event_id' => strval($event_id),
             'name' => fake()->name,
             'email' => fake()->safeEmail(),
-            'cpf' => fake()->numerify('###########'),
+            'cpf' => Generator::cpf(),
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
@@ -41,14 +43,14 @@ class SubscribersTest extends TestCase
         );
 
         $this->assertSame(
-            'Subscrição realizada com sucesso.',
+            'Inscrição realizada com sucesso.',
             $response->original['data']
         );
     }
 
     public function test_subscriber_controller_exceptions()
     {
-        $subscriber = Mockery::mock(SubscriberRepositoryInterface::class);
+        $subscriber = Mockery::mock(SubscriberService::class);
         $eventSubscriber = Mockery::mock(EventsSubscribersRepositoryInterface::class);
         $log = new Log();
         $subscriber->shouldReceive('index')
