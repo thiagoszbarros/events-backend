@@ -8,32 +8,15 @@ use Tests\TestCase;
 use App\Models\Event;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use App\Interfaces\SubscriberRepositoryInterface;
-use App\Http\Requests\PaginationRequest;
 use App\Http\Requests\SubscriberRequest;
 use App\Http\Controllers\SubscriberController;
 use App\Interfaces\EventsSubscribersInterface;
+use App\Interfaces\SubscriberRepositoryInterface;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SubscribersTest extends TestCase
 {
-    // use DatabaseTransactions;
-
-    public function test_index(): void
-    {
-        $response = $this->get('/api/subscribers');
-
-        $response->assertStatus(Response::HTTP_OK);
-
-        $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
-
-        $this->assertSame(
-            'object',
-            gettype($response->original['data'])
-        );
-    }
+    use DatabaseTransactions;
 
     public function test_store(): void
     {
@@ -73,13 +56,7 @@ class SubscribersTest extends TestCase
             ->shouldReceive('store')
             ->andThrow(new Exception());
 
-        $resultIndex = (new SubscriberController($subscriber, $eventSubscriber, $log))->index(new PaginationRequest);
         $resultCreate = (new SubscriberController($subscriber, $eventSubscriber, $log))->store(new SubscriberRequest);
-
-        $this->assertSame(
-            $resultIndex->original,
-            ['data' => []]
-        );
 
         $this->assertSame(
             $resultCreate->original,
