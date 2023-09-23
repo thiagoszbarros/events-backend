@@ -20,7 +20,7 @@ class EventsSubscribersFactory extends Factory
     {
         return [
             'event_id' => Event::inRandomOrder()->first()->id,
-            'subscriber_id' => Subscriber::inRandomOrder()->first()->id
+            'subscriber_id' => Subscriber::inRandomOrder()->first()->id,
         ];
     }
 }

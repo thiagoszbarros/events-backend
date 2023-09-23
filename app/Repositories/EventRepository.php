@@ -35,7 +35,7 @@ class EventRepository implements EventRepositoryInterface
                     'name' => $event->name,
                     'start_date' => Carbon::createFromFormat('Y-m-d', $event->start_date),
                     'end_date' => Carbon::createFromFormat('Y-m-d', $event->end_date),
-                    'status' => 1
+                    'status' => 1,
                 ]
             );
     }

@@ -2,19 +2,18 @@
 
 namespace Tests\Feature;
 
-use Mockery;
-use Exception;
-use Tests\TestCase;
+use App\Http\Controllers\SubscriberController;
+use App\Http\Requests\SubscriberRequest;
+use App\Interfaces\EventsSubscribersRepositoryInterface;
 use App\Models\Event;
+use App\Services\SubscriberService;
+use Avlima\PhpCpfCnpjGenerator\Generator;
+use Exception;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use App\Http\Requests\SubscriberRequest;
-use Avlima\PhpCpfCnpjGenerator\Generator;
-use App\Http\Controllers\SubscriberController;
-use App\Interfaces\SubscriberRepositoryInterface;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Interfaces\EventsSubscribersRepositoryInterface;
-use App\Services\SubscriberService;
+use Mockery;
+use Tests\TestCase;
 
 class SubscribersTest extends TestCase
 {

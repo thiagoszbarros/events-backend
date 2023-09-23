@@ -31,7 +31,7 @@ class SubscriberRequest extends FormRequest
             'name' => [
                 'bail',
                 'required',
-                'string'
+                'string',
             ],
             'email' => [
                 'bail',
@@ -43,8 +43,8 @@ class SubscriberRequest extends FormRequest
                 'required',
                 'numeric',
                 'digits:11',
-                new CPF
-            ]
+                new CPF,
+            ],
         ];
     }
 }

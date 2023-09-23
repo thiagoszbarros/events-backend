@@ -25,8 +25,8 @@ class SubscribersRequest extends FormRequest
             'event_id' => [
                 'required',
                 'string',
-                'integer'
-            ]
+                'integer',
+            ],
         ];
     }
 }

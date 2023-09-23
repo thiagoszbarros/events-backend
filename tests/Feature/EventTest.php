@@ -2,19 +2,19 @@
 
 namespace Tests\Feature;
 
-use Mockery;
-use Exception;
-use Tests\TestCase;
-use App\Models\Event;
-use App\Interfaces\EventRepositoryInterface;
-use Illuminate\Http\Response;
-use App\Http\Requests\EventRequest;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\EventController;
+use App\Http\Requests\EventRequest;
+use App\Interfaces\EventRepositoryInterface;
 use App\Interfaces\SubscriberRepositoryInterface;
+use App\Models\Event;
 use App\Models\EventsSubscribers;
 use App\Models\Subscriber;
+use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Mockery;
+use Tests\TestCase;
 
 class EventTest extends TestCase
 {
@@ -41,7 +41,7 @@ class EventTest extends TestCase
     {
         $id = Event::factory()->create()->id;
 
-        $response = $this->get('/api/events/' . $id);
+        $response = $this->get('/api/events/'.$id);
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -90,7 +90,7 @@ class EventTest extends TestCase
         $startDate = now()->addDays(11)->format('Y-m-d');
         $endDate = now()->addDays(13)->format('Y-m-d');
 
-        $response = $this->put('/api/events/' . $id, [
+        $response = $this->put('/api/events/'.$id, [
             'name' => $name,
             'start_date' => $startDate,
             'end_date' => $endDate,
@@ -131,14 +131,13 @@ class EventTest extends TestCase
         );
     }
 
-
     public function test_detele(): void
     {
         $id = Event::factory()->create()->id;
 
         $eventsBeforeDelete = Event::count();
 
-        $response = $this->delete('/api/events/' . $id);
+        $response = $this->delete('/api/events/'.$id);
 
         $eventsAfterDelete = Event::count();
 
@@ -165,14 +164,13 @@ class EventTest extends TestCase
         );
     }
 
-
     public function test_subscribers(): void
     {
         $eventId = strval(Event::factory()->create()->id);
         EventsSubscribers::create(
             [
                 'event_id' => $eventId,
-                'subscriber_id' => Subscriber::factory()->create()->id
+                'subscriber_id' => Subscriber::factory()->create()->id,
             ]
         );
 
@@ -189,7 +187,7 @@ class EventTest extends TestCase
             'object',
             gettype($response->original['data'])
         );
-        
+
         $this->assertTrue(count($response->original['data']) >= 1);
     }
 
@@ -209,7 +207,7 @@ class EventTest extends TestCase
             ->shouldReceive('delete')
             ->andThrow(new Exception());
 
-        $resultIndex = (new EventController($event, $subscriber,  $log))->index();
+        $resultIndex = (new EventController($event, $subscriber, $log))->index();
         $resultShow = (new EventController($event, $subscriber, $log))->show(1);
         $resultCreate = (new EventController($event, $subscriber, $log))->store(new EventRequest);
         $resultUpdate = (new EventController($event, $subscriber, $log))->update(new EventRequest, 1);
@@ -222,7 +220,7 @@ class EventTest extends TestCase
 
         $this->assertSame(
             $resultShow->original,
-            ['data' =>  'Não foi possível obter o evento.']
+            ['data' => 'Não foi possível obter o evento.']
         );
 
         $this->assertSame(
