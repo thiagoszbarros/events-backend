@@ -20,11 +20,13 @@ class SubscriberController extends Controller
     public function store(SubscriberRequest $request): Response
     {
         try {
+            $result = $this->subscriber->create($request);
+
             return new Response(
                 [
-                    'data' => $this->subscriber->create($request),
+                    'data' => $result->data,
                 ],
-                Response::HTTP_CREATED
+                $result->code
             );
         } catch (\Exception $e) {
             $this->log::info($e);
