@@ -35,7 +35,8 @@ class CreateEventSubscriberContract extends Contract
         );
 
         $this->hasDateConflict(
-            eventId: $eventId
+            eventId: $eventId,
+            subscriberId: $subscriberId
         );
 
         return $this;
@@ -43,7 +44,7 @@ class CreateEventSubscriberContract extends Contract
 
     private function eventStatusShouldBeActive(bool $status): void
     {
-        if (! $status) {
+        if (!$status) {
             $this->isValid = false;
             array_push($this->errors, 'Inscrição não realizada pois o evento está inativo.');
         }
@@ -62,9 +63,12 @@ class CreateEventSubscriberContract extends Contract
         }
     }
 
-    public function hasDateConflict($eventId)
+    public function hasDateConflict($eventId, $subscriberId)
     {
-        if ($this->event->hasDateConflict($eventId)) {
+        if ($this->event->hasDateConflict(
+            eventId: $eventId,
+            subscriberId: $subscriberId
+        )) {
             $this->isValid = false;
             array_push($this->errors, 'Inscrição não realizada por conflito de data com outro evento.');
         }

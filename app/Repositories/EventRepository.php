@@ -59,11 +59,11 @@ class EventRepository implements EventRepositoryInterface
         $this->event->destroy($id);
     }
 
-    public function hasDateConflict($event_id): bool
+    public function hasDateConflict(string $eventId, string $subscriberId): bool
     {
-        $eventToCheck = $this->event::find($event_id);
+        $eventToCheck = $this->event::find($eventId);
 
-        return $this->event::where('id', '<>', $event_id)
+        return $this->event::where('id', '<>', $eventId)
             ->where(function ($query) use ($eventToCheck) {
                 $query->where(function ($q) use ($eventToCheck) {
                     $q->where('start_date', '>=', $eventToCheck->start_date)
@@ -77,6 +77,9 @@ class EventRepository implements EventRepositoryInterface
                         $q->where('start_date', '<=', $eventToCheck->start_date)
                             ->where('end_date', '>=', $eventToCheck->end_date);
                     });
+            })
+            ->whereHas('subscribers', function ($q) use ($subscriberId) {
+                $q->where('subscriber_id', $subscriberId);
             })
             ->exists();
     }
