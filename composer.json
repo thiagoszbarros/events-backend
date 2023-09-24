@@ -1,8 +1,16 @@
 {
-    "name": "laravel/laravel",
+    "name": "thiagoszbarros/events-backend",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "",
+    "authors": [
+        {
+            "name": "Thiago Barros"
+        }
+    ],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.1",
