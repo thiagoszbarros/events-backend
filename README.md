@@ -11,21 +11,18 @@
     ````
     cp .env.example .env
     ````
-    Isso criará um ambiente de desenvolvimento contido em contêineres Docker.
 
 4. Execute o seguinte comando para configurar e iniciar o projeto:
 
     ````
     docker-compose up -d
     ````
-    Isso criará um ambiente de desenvolvimento contido em contêineres Docker.
 
 4. Execute o seguinte comando para configurar as dependências:
 
     ````
     docker exec php composer install
     ````
-    Isso criará um ambiente de desenvolvimento contido em contêineres Docker.
 
 5. Gere a chave da aplicação:
 
@@ -38,8 +35,6 @@
     docker exec php php artisan migrate --seed
     ````
 
-    Isso criará tabelas no banco de dados e preencherá com dados de teste.
-
 5. Configure o git para ignorar permissões:
 
     ````
@@ -51,8 +46,6 @@
     ````
     sudo chmod -R 777 storage
     ````
-
-    Isso garantirá que o Laravel tenha as permissões corretas para acessar o diretório de armazenamento.
 
 7. Abra seu navegador e acesse `http://localhost:8001` para visualizar o Laravel aplicativo em ação.
 
