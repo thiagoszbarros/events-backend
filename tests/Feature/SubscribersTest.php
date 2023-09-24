@@ -2,19 +2,17 @@
 
 namespace Tests\Feature;
 
-use Mockery;
-use Exception;
-use Tests\TestCase;
-use App\Models\Event;
-use App\Models\Subscriber;
-use Illuminate\Http\Response;
-use App\Services\SubscriberService;
-use Illuminate\Support\Facades\Log;
-use App\Http\Requests\SubscriberRequest;
-use Avlima\PhpCpfCnpjGenerator\Generator;
 use App\Http\Controllers\SubscriberController;
+use App\Http\Requests\SubscriberRequest;
+use App\Models\Event;
+use App\Services\SubscriberService;
+use Avlima\PhpCpfCnpjGenerator\Generator;
+use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Interfaces\EventsSubscribersRepositoryInterface;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Mockery;
+use Tests\TestCase;
 
 class SubscribersTest extends TestCase
 {
@@ -50,15 +48,14 @@ class SubscribersTest extends TestCase
 
     public function test_subscriber_controller_exceptions()
     {
-        $subscriber = Mockery::mock(SubscriberService::class);
-        $eventSubscriber = Mockery::mock(EventsSubscribersRepositoryInterface::class);
+        $service = Mockery::mock(SubscriberService::class);
         $log = new Log();
-        $subscriber->shouldReceive('index')
+        $service->shouldReceive('index')
             ->andThrow(new Exception())
             ->shouldReceive('store')
             ->andThrow(new Exception());
 
-        $resultCreate = (new SubscriberController($subscriber, $eventSubscriber, $log))->store(new SubscriberRequest);
+        $resultCreate = (new SubscriberController($service, $log))->store(new SubscriberRequest);
 
         $this->assertSame(
             $resultCreate->original,

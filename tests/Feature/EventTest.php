@@ -2,19 +2,18 @@
 
 namespace Tests\Feature;
 
-use Mockery;
-use Exception;
-use Tests\TestCase;
-use App\Models\Event;
-use App\Models\Subscriber;
-use Illuminate\Http\Response;
-use App\Models\EventsSubscribers;
-use App\Http\Requests\EventRequest;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\EventController;
-use App\Interfaces\EventRepositoryInterface;
-use App\Interfaces\SubscriberRepositoryInterface;
+use App\Http\Requests\EventRequest;
+use App\Models\Event;
+use App\Models\EventsSubscribers;
+use App\Models\Subscriber;
+use App\Services\EventService;
+use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Mockery;
+use Tests\TestCase;
 
 class EventTest extends TestCase
 {
@@ -193,10 +192,10 @@ class EventTest extends TestCase
 
     public function test_event_controller_exceptions()
     {
-        $event = Mockery::mock(EventRepositoryInterface::class);
-        $subscriber = Mockery::mock(SubscriberRepositoryInterface::class);
+        $service = Mockery::mock(EventService::class);
         $log = new Log();
-        $event->shouldReceive('index')
+
+        $service->shouldReceive('index')
             ->andThrow(new Exception())
             ->shouldReceive('store')
             ->andThrow(new Exception())
@@ -207,11 +206,11 @@ class EventTest extends TestCase
             ->shouldReceive('delete')
             ->andThrow(new Exception());
 
-        $resultIndex = (new EventController($event, $subscriber, $log))->index();
-        $resultShow = (new EventController($event, $subscriber, $log))->show(1);
-        $resultCreate = (new EventController($event, $subscriber, $log))->store(new EventRequest);
-        $resultUpdate = (new EventController($event, $subscriber, $log))->update(new EventRequest, 1);
-        $resultDelete = (new EventController($event, $subscriber, $log))->destroy(1);
+        $resultIndex = (new EventController($service, $log))->index();
+        $resultShow = (new EventController($service, $log))->show(1);
+        $resultCreate = (new EventController($service, $log))->store(new EventRequest);
+        $resultUpdate = (new EventController($service, $log))->update(new EventRequest, 1);
+        $resultDelete = (new EventController($service, $log))->destroy(1);
 
         $this->assertSame(
             $resultIndex->original,
