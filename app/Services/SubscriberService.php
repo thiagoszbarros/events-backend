@@ -28,15 +28,15 @@ class SubscriberService
         $subscriber = $this->subscriber
             ->store($request);
 
-        $contractValidation = $this->contract
+        $contract = $this->contract
             ->validate(
                 $event->status,
                 $event->id,
                 $subscriber->id
             );
 
-        if (! $contractValidation->isValid) {
-            return new ResultDto($contractValidation->errors[Errors::FIRST->position()], 422);
+        if (! $contract->isValid) {
+            return new ResultDto($contract->errors[Errors::FIRST->position()], 422);
         }
 
         $this->eventsSubscribers->store(
