@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SubscriberRequest;
-use App\Interfaces\EventsSubscribersRepositoryInterface;
 use App\Services\SubscriberService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +11,6 @@ class SubscriberController extends Controller
 {
     public function __construct(
         private SubscriberService $subscriber,
-        private EventsSubscribersRepositoryInterface $eventSubscriber,
         private Log $log,
     ) {
     }

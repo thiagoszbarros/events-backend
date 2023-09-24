@@ -9,7 +9,6 @@ use App\Interfaces\EventRepositoryInterface;
 use App\Interfaces\EventsSubscribersRepositoryInterface;
 use App\Interfaces\SubscriberRepositoryInterface;
 use App\Shared\Dtos\ResultDto;
-use stdClass;
 
 class SubscriberService
 {
@@ -36,7 +35,7 @@ class SubscriberService
                 $subscriber->id
             );
 
-        if (!$contractValidation->isValid) {
+        if (! $contractValidation->isValid) {
             return new ResultDto($contractValidation->errors[Errors::FIRST->position()], 422);
         }
 
