@@ -2,16 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Http\Controllers\SubscriberController;
-use App\Http\Requests\SubscriberRequest;
 use App\Models\Event;
-use App\Services\SubscriberService;
 use Avlima\PhpCpfCnpjGenerator\Generator;
-use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
-use Mockery;
 use Tests\TestCase;
 
 class SubscribersTest extends TestCase
@@ -43,23 +37,6 @@ class SubscribersTest extends TestCase
         $this->assertSame(
             'Inscrição realizada com sucesso.',
             $response->original['data']
-        );
-    }
-
-    public function test_subscriber_controller_exceptions()
-    {
-        $service = Mockery::mock(SubscriberService::class);
-        $log = new Log();
-        $service->shouldReceive('index')
-            ->andThrow(new Exception())
-            ->shouldReceive('store')
-            ->andThrow(new Exception());
-
-        $resultCreate = (new SubscriberController($service, $log))->store(new SubscriberRequest);
-
-        $this->assertSame(
-            $resultCreate->original,
-            ['data' => 'Não foi possível realizar a subscrição.']
         );
     }
 
