@@ -47,9 +47,4 @@ class EventService
 
         return new ResultDto('Evento excluído com sucesso.', 200);
     }
-
-    public function subscribers($eventId)
-    {
-        return new ResultDto($this->subscriber->getByEventId($eventId), 200);
-    }
 }

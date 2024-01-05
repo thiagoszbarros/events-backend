@@ -5,10 +5,8 @@ namespace Tests\Feature;
 use App\Models\Event;
 use App\Models\EventsSubscribers;
 use App\Models\Subscriber;
-
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Response;
-
 use Tests\TestCase;
 
 class EventTest extends TestCase

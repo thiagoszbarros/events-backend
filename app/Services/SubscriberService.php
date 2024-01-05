@@ -20,6 +20,12 @@ class SubscriberService
     ) {
     }
 
+    public function listByEvent($eventId): ResultDto
+    {
+        return new ResultDto(
+            $this->subscriber->getByEventId($eventId), 200);
+    }
+
     public function create(SubscriberRequest $request): object
     {
         $event = $this->event
