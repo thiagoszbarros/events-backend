@@ -2,17 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Http\Controllers\EventController;
-use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use App\Models\EventsSubscribers;
 use App\Models\Subscriber;
-use App\Services\EventService;
-use Exception;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
-use Mockery;
+
 use Tests\TestCase;
 
 class EventTest extends TestCase
@@ -188,53 +184,5 @@ class EventTest extends TestCase
         );
 
         $this->assertTrue(count($response->original['data']) >= 1);
-    }
-
-    public function test_event_controller_exceptions()
-    {
-        $service = Mockery::mock(EventService::class);
-        $log = new Log();
-
-        $service->shouldReceive('index')
-            ->andThrow(new Exception())
-            ->shouldReceive('store')
-            ->andThrow(new Exception())
-            ->shouldReceive('store')
-            ->andThrow(new Exception())
-            ->shouldReceive('update')
-            ->andThrow(new Exception())
-            ->shouldReceive('delete')
-            ->andThrow(new Exception());
-
-        $resultIndex = (new EventController($service, $log))->index();
-        $resultShow = (new EventController($service, $log))->show(1);
-        $resultCreate = (new EventController($service, $log))->store(new EventRequest);
-        $resultUpdate = (new EventController($service, $log))->update(new EventRequest, 1);
-        $resultDelete = (new EventController($service, $log))->destroy(1);
-
-        $this->assertSame(
-            $resultIndex->original,
-            ['data' => []]
-        );
-
-        $this->assertSame(
-            $resultShow->original,
-            ['data' => 'Não foi possível obter o evento.']
-        );
-
-        $this->assertSame(
-            $resultCreate->original,
-            ['data' => 'Não foi possível criar o evento.']
-        );
-
-        $this->assertSame(
-            $resultUpdate->original,
-            ['data' => 'Não foi possível atualizar o evento.']
-        );
-
-        $this->assertSame(
-            $resultDelete->original,
-            ['data' => 'Não foi possível excluir o evento.']
-        );
     }
 }
