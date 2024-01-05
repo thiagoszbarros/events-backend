@@ -20,12 +20,12 @@ Route::get('/', function () {
         'description' => '',
         'authors' => [
             [
-                'name' => 'Thiago Barros'
-            ]
+                'name' => 'Thiago Barros',
+            ],
         ],
         'keywords' => [
             'laravel',
-            'framework'
+            'framework',
         ],
         'license' => 'MIT',
         'laravel' => app()->version(),

@@ -33,7 +33,7 @@ class Handler extends ExceptionHandler
     {
         return new Response(
             [
-                'data' => 'Opa! Algo deu errado. Tente novamente mais tarde.'
+                'data' => 'Opa! Algo deu errado. Tente novamente mais tarde.',
             ],
             Response::HTTP_UNPROCESSABLE_ENTITY
         );
