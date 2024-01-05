@@ -17,24 +17,13 @@ class SubscriberController extends Controller
 
     public function store(SubscriberRequest $request): Response
     {
-        try {
-            $result = $this->subscriber->create($request);
+        $result = $this->subscriber->create($request);
 
-            return new Response(
-                [
-                    'data' => $result->data,
-                ],
-                $result->code
-            );
-        } catch (\Exception $e) {
-            $this->log::info($e);
-
-            return new Response(
-                [
-                    'data' => 'Não foi possível realizar a subscrição.',
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        return new Response(
+            [
+                'data' => $result->data,
+            ],
+            $result->code
+        );
     }
 }
