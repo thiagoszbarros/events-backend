@@ -18,142 +18,76 @@ class EventController extends Controller
 
     public function index(): Response
     {
-        try {
-            $result = $this->service->index();
+        $result = $this->service->index();
 
-            return new Response(
-                [
-                    'data' => $result->data,
-                ],
-                $result->code
-            );
-        } catch (\Exception $e) {
-            $this->log::info($e);
-
-            return new Response(
-                [
-                    'data' => [],
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        return new Response(
+            [
+                'data' => $result->data,
+            ],
+            $result->code
+        );
     }
 
     public function store(EventRequest $request): Response
     {
-        try {
-            $result = $this->service
-                ->store($request);
+        $result = $this->service
+            ->store($request);
 
-            return new Response(
-                [
-                    'data' => $result->data,
-                ],
-                $result->code
-            );
-        } catch (\Exception $e) {
-            $this->log::info($e);
-
-            return new Response(
-                [
-                    'data' => 'Não foi possível criar o evento.',
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        return new Response(
+            [
+                'data' => $result->data,
+            ],
+            $result->code
+        );
     }
 
     public function show(string $id): Response
     {
-        try {
-            $result = $this->service
-                ->find($id);
+        $result = $this->service
+            ->find($id);
 
-            return new Response(
-                [
-                    'data' => $result->data,
-                ],
-                $result->code
-            );
-        } catch (\Exception $e) {
-            $this->log::info($e);
-
-            return new Response(
-                [
-                    'data' => 'Não foi possível obter o evento.',
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        return new Response(
+            [
+                'data' => $result->data,
+            ],
+            $result->code
+        );
     }
 
     public function update(EventRequest $request, string $id): Response
     {
-        try {
-            $result = $this->service->update($id, $request);
+        $result = $this->service->update($id, $request);
 
-            return new Response(
-                [
-                    'data' => $result->data,
-                ],
-                $result->code
-            );
-        } catch (\Exception $e) {
-            $this->log::info($e);
-
-            return new Response(
-                [
-                    'data' => 'Não foi possível atualizar o evento.',
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        return new Response(
+            [
+                'data' => $result->data,
+            ],
+            $result->code
+        );
     }
 
     public function destroy($id): Response
     {
-        try {
-            $result = $this->service
-                ->delete($id);
+        $result = $this->service
+            ->delete($id);
 
-            return new Response(
-                [
-                    'data' => $result->data,
-                ],
-                $result->code
-            );
-        } catch (\Exception $e) {
-            $this->log::info($e);
-
-            return new Response(
-                [
-                    'data' => 'Não foi possível excluir o evento.',
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        return new Response(
+            [
+                'data' => $result->data,
+            ],
+            $result->code
+        );
     }
 
     public function subscribers(SubscribersRequest $request): Response
     {
-        try {
-            $result = $this->service->subscribers($request->event_id);
+        $result = $this->service->subscribers($request->event_id);
 
-            return new Response(
-                [
-                    'data' => $result->data,
-                ],
-                $result->code
-            );
-        } catch (\Exception $e) {
-            $this->log::info($e);
-
-            return new Response(
-                [
-                    'data' => [],
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        return new Response(
+            [
+                'data' => $result->data,
+            ],
+            $result->code
+        );
     }
 }
