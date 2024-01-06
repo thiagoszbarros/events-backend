@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+declare(strict_types=1);
 
-class EventRequest extends Request
+namespace App\Http\Requests\Events;
+
+use App\Http\Requests\Request;
+
+class UpdateEventRequest extends Request
 {
     public function rules(): array
     {
@@ -10,6 +14,8 @@ class EventRequest extends Request
             'name' => [
                 'required',
                 'string',
+                'min:2',
+                'max:255',
             ],
             'start_date' => [
                 'required',

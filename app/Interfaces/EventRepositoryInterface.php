@@ -9,11 +9,11 @@ interface EventRepositoryInterface
 {
     public function getActives(): Collection;
 
-    public function findById(string $id): Event|null;
+    public function findById(string $id): ?Event;
 
     public function create(object $event): Event|false;
 
-    public function update(string $id, object $event): void;
+    public function update(array $event, int $id): void;
 
     public function delete(string $id): void;
 

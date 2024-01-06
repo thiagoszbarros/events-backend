@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\CPF;
-use App\Http\Requests\Request;
 
 class SubscriberRequest extends Request
 {

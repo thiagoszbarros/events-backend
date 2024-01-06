@@ -21,7 +21,7 @@ class EventRepository implements EventRepositoryInterface
         )->get();
     }
 
-    public function findById(string $id): Event|null
+    public function findById(string $id): ?Event
     {
         return $this->event
             ->find($id);
@@ -40,18 +40,11 @@ class EventRepository implements EventRepositoryInterface
             );
     }
 
-    public function update(string $id, object $event): void
+    public function update(array $event, int $id): void
     {
-        $this->event->find(
-            $id
-        )
-            ->update(
-                [
-                    'name' => $event->name,
-                    'start_date' => Carbon::createFromFormat('Y-m-d', $event->start_date),
-                    'end_date' => Carbon::createFromFormat('Y-m-d', $event->end_date),
-                ]
-            );
+        $this->event
+            ->whereId($id)
+            ->update($event);
     }
 
     public function delete(string $id): void

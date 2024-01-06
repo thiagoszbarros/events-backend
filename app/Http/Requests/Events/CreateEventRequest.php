@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Events;
 
-class EventRequest extends Request
+use Illuminate\Http\Request;
+
+class CreateEventRequest extends Request
 {
     public function rules(): array
     {
