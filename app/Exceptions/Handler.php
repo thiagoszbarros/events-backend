@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -31,11 +32,24 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception): Response
     {
+        Log::info($exception);
+
+        if (env('APP_ENV') === 'local' || env('APP_ENV') === 'testing') {
+            return new Response(
+                [
+                    'data' => $exception->getMessage(),
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
+        // @codeCoverageIgnoreStart
         return new Response(
             [
                 'data' => 'Opa! Algo deu errado. Tente novamente mais tarde.',
             ],
-            Response::HTTP_UNPROCESSABLE_ENTITY
+            Response::HTTP_INTERNAL_SERVER_ERROR
         );
+        // @codeCoverageIgnoreEnd
     }
 }
