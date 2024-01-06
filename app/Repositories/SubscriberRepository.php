@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\SubscriberRepositoryInterface;
 use App\Models\Subscriber;
+use App\ValueObjects\EventSubscrivers\EventSubscriberParams;
 use Illuminate\Database\Eloquent\Collection;
 
 class SubscriberRepository implements SubscriberRepositoryInterface
@@ -13,7 +14,7 @@ class SubscriberRepository implements SubscriberRepositoryInterface
     ) {
     }
 
-    public function store($subscriber): Subscriber
+    public function store(EventSubscriberParams $subscriber): Subscriber
     {
         return $this->subscriber::firstOrCreate(
             [

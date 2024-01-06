@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Event;
 use Avlima\PhpCpfCnpjGenerator\Generator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class SubscribersTest extends TestCase
@@ -14,29 +13,19 @@ class SubscribersTest extends TestCase
 
     public function test_store(): void
     {
-        $event_id = Event::factory()->create()->id;
         $response = $this->post('/api/subscribers', [
-            'event_id' => strval($event_id),
+            'event_id' => strval(Event::factory()->create()->id),
             'name' => fake()->name,
             'email' => fake()->safeEmail(),
             'cpf' => Generator::cpf(),
         ]);
 
-        $response->assertStatus(Response::HTTP_CREATED);
-
+        $response->assertCreated();
+        $this->assertIsArray($response->original);
+        $this->assertIsString($response->original['data']);
         $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
-
-        $this->assertSame(
-            'string',
-            gettype($response->original['data'])
-        );
-
-        $this->assertSame(
+            $response->original['data'],
             'Inscrição realizada com sucesso.',
-            $response->original['data']
         );
     }
 
@@ -52,21 +41,12 @@ class SubscribersTest extends TestCase
             'cpf' => Generator::cpf(),
         ]);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-
+        $response->assertBadRequest();
+        $this->assertIsArray($response->original);
+        $this->assertIsString($response->original['data']);
         $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
-
-        $this->assertSame(
-            'string',
-            gettype($response->original['data'])
-        );
-
-        $this->assertSame(
+            $response->original['data'],
             'Inscrição não realizada pois o evento está inativo.',
-            $response->original['data']
         );
     }
 
@@ -91,21 +71,12 @@ class SubscribersTest extends TestCase
             'cpf' => $subscriberCpf,
         ]);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-
+        $response->assertBadRequest();
+        $this->assertIsArray($response->original);
+        $this->assertIsString($response->original['data']);
         $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
-
-        $this->assertSame(
-            'string',
-            gettype($response->original['data'])
-        );
-
-        $this->assertSame(
+            $response->original['data'],
             'Inscrição não realizada por já ter sido realizada anteriormente.',
-            $response->original['data']
         );
     }
 
@@ -131,21 +102,81 @@ class SubscribersTest extends TestCase
             'cpf' => $subscriberCpf,
         ]);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-
+        $response->assertBadRequest();
+        $this->assertIsArray($response->original);
+        $this->assertIsString($response->original['data']);
         $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
-
-        $this->assertSame(
-            'string',
-            gettype($response->original['data'])
-        );
-
-        $this->assertSame(
+            $response->original['data'],
             'Inscrição não realizada por conflito de data com outro evento.',
-            $response->original['data']
+        );
+    }
+
+    public function test_document_has_first_checker_digit_invalid(): void
+    {
+        $event = Event::factory()->create();
+        $subscriberName = fake()->name;
+        $subscriberName = fake()->safeEmail();
+        $subscriberCpf = '12345678919';
+
+        $response = $this->post('/api/subscribers', [
+            'event_id' => strval($event->id),
+            'name' => $subscriberName,
+            'email' => $subscriberName,
+            'cpf' => $subscriberCpf,
+        ]);
+
+        $response->assertBadRequest();
+        $this->assertIsArray($response->original);
+        $this->assertIsString($response->original['data']);
+        $this->assertSame(
+            $response->original['data'],
+            'O primeiro dígito verificador do CPF não está correto.O segundo dígito verificador do CPF não está correto.',
+        );
+    }
+
+    public function test_document_has_second_checker_digit_invalid(): void
+    {
+        $event = Event::factory()->create();
+        $subscriberName = fake()->name;
+        $subscriberName = fake()->safeEmail();
+        $subscriberCpf = '12345678900';
+
+        $response = $this->post('/api/subscribers', [
+            'event_id' => strval($event->id),
+            'name' => $subscriberName,
+            'email' => $subscriberName,
+            'cpf' => $subscriberCpf,
+        ]);
+
+        $response->assertBadRequest();
+        $this->assertIsArray($response->original);
+        $this->assertIsString($response->original['data']);
+        $this->assertSame(
+            $response->original['data'],
+            'O segundo dígito verificador do CPF não está correto.',
+        );
+    }
+
+    public function test_document_has_all_digits_equals(): void
+    {
+        $event = Event::factory()->create();
+        $subscriberName = fake()->name;
+        $subscriberName = fake()->safeEmail();
+        $subscriberCpf = '99999999999';
+
+        $response = $this->post('/api/subscribers', [
+            'event_id' => strval($event->id),
+            'name' => $subscriberName,
+            'email' => $subscriberName,
+            'cpf' => $subscriberCpf,
+        ]);
+
+        $response->assertBadRequest();
+        $this->assertIsArray($response->original);
+        $this->assertIsString($response->original['data']);
+        $this->assertSame(
+            $response->original['data'],
+            'O CPF fornecido não possui 11 dígitos válidos ou contém todos os números iguais.',
         );
     }
 }
