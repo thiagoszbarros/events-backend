@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\EventRepositoryInterface;
 use App\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 class EventRepository implements EventRepositoryInterface
 {
@@ -13,21 +14,20 @@ class EventRepository implements EventRepositoryInterface
     ) {
     }
 
-    public function index(): object
+    public function getActives(): Collection
     {
         return $this->event::whereStatus(
             true
-        )
-            ->get();
+        )->get();
     }
 
-    public function find(string $id): object
+    public function findById(string $id): Event|null
     {
         return $this->event
             ->find($id);
     }
 
-    public function store(object $event): object
+    public function create(object $event): Event|false
     {
         return $this->event
             ->create(
@@ -80,7 +80,6 @@ class EventRepository implements EventRepositoryInterface
             })
             ->whereHas('subscribers', function ($q) use ($subscriberId) {
                 $q->where('subscriber_id', $subscriberId);
-            })
-            ->exists();
+            })->exists();
     }
 }

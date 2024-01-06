@@ -2,13 +2,16 @@
 
 namespace App\Interfaces;
 
+use App\Models\Event;
+use Illuminate\Database\Eloquent\Collection;
+
 interface EventRepositoryInterface
 {
-    public function index(): object;
+    public function getActives(): Collection;
 
-    public function find(string $id): ?object;
+    public function findById(string $id): Event|null;
 
-    public function store(object $event): ?object;
+    public function create(object $event): Event|false;
 
     public function update(string $id, object $event): void;
 
