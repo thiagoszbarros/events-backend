@@ -3,21 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EventRequest;
-use App\Services\EventService;
+use App\Services\Events\CreateEvent;
+use App\Services\Events\DeleteEvent;
+use App\Services\Events\FindEventById;
+use App\Services\Events\GetActiveEvents;
+use App\Services\Events\UpdateEvent;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
     public function __construct(
-        private EventService $eventService,
-        private Log $log
+        private readonly CreateEvent $createEvent,
+        private readonly GetActiveEvents $getActiveEvents,
+        private readonly FindEventById $findEventById,
+        private readonly UpdateEvent $updateEvent,
+        private readonly DeleteEvent $deleteEvent,
     ) {
     }
 
     public function index(): Response
     {
-        $result = $this->eventService->index();
+        $result = $this->getActiveEvents->execute();
 
         return new Response(
             [
@@ -29,8 +35,8 @@ class EventController extends Controller
 
     public function store(EventRequest $request): Response
     {
-        $result = $this->eventService
-            ->store($request);
+        $result = $this->createEvent
+            ->execute($request);
 
         return new Response(
             [
@@ -40,10 +46,10 @@ class EventController extends Controller
         );
     }
 
-    public function show(string $id): Response
+    public function show(int $id): Response
     {
-        $result = $this->eventService
-            ->find($id);
+        $result = $this->findEventById
+            ->execute($id);
 
         return new Response(
             [
@@ -53,9 +59,9 @@ class EventController extends Controller
         );
     }
 
-    public function update(EventRequest $request, string $id): Response
+    public function update(EventRequest $request, int $id): Response
     {
-        $result = $this->eventService->update($id, $request);
+        $result = $this->updateEvent->execute($request, $id,);
 
         return new Response(
             [
@@ -67,8 +73,8 @@ class EventController extends Controller
 
     public function destroy($id): Response
     {
-        $result = $this->eventService
-            ->delete($id);
+        $result = $this->deleteEvent
+            ->execute($id);
 
         return new Response(
             [

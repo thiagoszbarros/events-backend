@@ -130,7 +130,7 @@ class EventTest extends TestCase
 
         $eventsBeforeDelete = Event::count();
 
-        $response = $this->delete('/api/events/'.$id);
+        $response = $this->delete("/api/events/$id");
 
         $eventsAfterDelete = Event::count();
 
