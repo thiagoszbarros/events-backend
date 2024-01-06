@@ -21,3 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('events', App\Http\Controllers\EventController::class);
 Route::post('subscribers', [App\Http\Controllers\SubscriberController::class, 'store']);
 Route::get('events/{event}/subscribers', [App\Http\Controllers\SubscriberController::class, 'index']);
+
+Route::get('handlerTest', function () {
+    throw new \Exception('Opa! Esse teste passou.');
+});
