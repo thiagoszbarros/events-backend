@@ -2,9 +2,9 @@
 
 namespace App\Services\Events;
 
-use Illuminate\Http\Response;
-use App\Shared\Dtos\ResultDto;
 use App\Interfaces\EventRepositoryInterface;
+use App\Shared\Dtos\ResultDto;
+use Illuminate\Http\Response;
 
 class DeleteEvent
 {

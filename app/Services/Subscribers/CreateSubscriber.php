@@ -55,7 +55,7 @@ class CreateSubscriber extends Contract
             )
         );
 
-        if (!$this->isValid) {
+        if (! $this->isValid) {
             return new ResultDto(
                 $this->error,
                 Response::HTTP_BAD_REQUEST

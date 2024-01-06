@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Events;
 
-use App\Http\Requests\EventRequest;
-use App\Shared\Dtos\ResultDto;
+use App\Http\Requests\Events\UpdateEventRequest;
 use App\Interfaces\EventRepositoryInterface;
+use App\Shared\Dtos\ResultDto;
 use Illuminate\Http\Response;
 
 class UpdateEvent
@@ -13,11 +15,11 @@ class UpdateEvent
         private EventRepositoryInterface $event,
     ) {
     }
-    
-    public function execute(EventRequest $request, int $id): ResultDto
+
+    public function execute(UpdateEventRequest $request, int $id): ResultDto
     {
         $this->event
-            ->update($id, $request);
+            ->update($request->validated(), $id);
 
         return new ResultDto('Evento atualizado com sucesso.', Response::HTTP_OK);
     }

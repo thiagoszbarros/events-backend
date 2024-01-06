@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EventRequest;
+use App\Http\Requests\Events\UpdateEventRequest;
 use App\Services\Events\CreateEvent;
 use App\Services\Events\DeleteEvent;
 use App\Services\Events\FindEventById;
@@ -59,9 +62,9 @@ class EventController extends Controller
         );
     }
 
-    public function update(EventRequest $request, int $id): Response
+    public function update(UpdateEventRequest $request, int $id): Response
     {
-        $result = $this->updateEvent->execute($request, $id,);
+        $result = $this->updateEvent->execute($request, $id);
 
         return new Response(
             [

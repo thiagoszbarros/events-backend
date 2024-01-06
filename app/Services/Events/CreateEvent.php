@@ -3,8 +3,8 @@
 namespace App\Services\Events;
 
 use App\Http\Requests\EventRequest;
-use App\Shared\Dtos\ResultDto;
 use App\Interfaces\EventRepositoryInterface;
+use App\Shared\Dtos\ResultDto;
 use Illuminate\Http\Response;
 
 class CreateEvent
