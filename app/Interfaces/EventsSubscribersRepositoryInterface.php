@@ -6,5 +6,5 @@ interface EventsSubscribersRepositoryInterface
 {
     public function findByEventIdAndSubscriverId(string $eventId, string $subscriberId): ?object;
 
-    public function store(string $eventId, string $subscriberId): void;
+    public function createEventSubscriber(string $eventId, string $subscriberId): void;
 }

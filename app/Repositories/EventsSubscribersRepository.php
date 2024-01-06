@@ -24,7 +24,7 @@ class EventsSubscribersRepository implements EventsSubscribersRepositoryInterfac
             ->first();
     }
 
-    public function store(
+    public function createEventSubscriber(
         string $eventId,
         string $subscriberId
     ): void {
