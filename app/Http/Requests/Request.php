@@ -14,7 +14,8 @@ class Request extends FormRequest
         throw new HttpResponseException(
             new Response(
                 [
-                    'data' => implode($validator->errors()->all()),
+                    'message' => implode($validator->errors()->all()),
+                    'data' => null,
                 ],
                 Response::HTTP_BAD_REQUEST,
             )
