@@ -12,5 +12,5 @@ interface SubscriberRepositoryInterface
 {
     public function findSubscriberByIdOrCreate(FindSubscriberByIdOrCreateParams $subscriber): Subscriber;
 
-    public function getByEventId(int $event_id): Collection;
+    public function getByEventId(int $eventId): Collection;
 }
