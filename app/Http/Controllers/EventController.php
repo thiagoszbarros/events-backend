@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EventRequest;
-use App\Http\Requests\Events\UpdateEventRequest;
+use App\Http\Requests\Id;
+use Illuminate\Http\Response;
 use App\Services\Events\CreateEvent;
 use App\Services\Events\DeleteEvent;
+use App\Services\Events\UpdateEvent;
 use App\Services\Events\FindEventById;
 use App\Services\Events\GetActiveEvents;
-use App\Services\Events\UpdateEvent;
-use Illuminate\Http\Response;
+use App\Http\Requests\Events\CreateEventRequest;
+use App\Http\Requests\Events\UpdateEventRequest;
 
 class EventController extends Controller
 {
@@ -26,64 +27,45 @@ class EventController extends Controller
 
     public function index(): Response
     {
-        $result = $this->getActiveEvents->execute();
-
-        return new Response(
-            [
-                'data' => $result->data,
-            ],
-            $result->code
+        return $this->response(
+            $this->getActiveEvents->execute()
         );
     }
 
-    public function store(EventRequest $request): Response
+    public function store(CreateEventRequest $request): Response
     {
-        $result = $this->createEvent
-            ->execute($request);
-
-        return new Response(
-            [
-                'data' => $result->data,
-            ],
-            $result->code
+        return $this->response(
+            $this->createEvent
+                ->execute($request),
+            Response::HTTP_CREATED
         );
     }
 
-    public function show(int $id): Response
+    public function show(Id $id): Response
     {
-        $result = $this->findEventById
-            ->execute($id);
-
-        return new Response(
-            [
-                'data' => $result->data,
-            ],
-            $result->code
+        return $this->response(
+            $this->findEventById
+                ->execute($id)
         );
     }
 
-    public function update(UpdateEventRequest $request, int $id): Response
+    public function update(UpdateEventRequest $request, Id $id): Response
     {
-        $result = $this->updateEvent->execute($request, $id);
-
-        return new Response(
-            [
-                'data' => $result->data,
-            ],
-            $result->code
+        return $this->response(
+            $this->updateEvent->execute(
+                $request,
+                $id
+            ),
+            Response::HTTP_NO_CONTENT
         );
     }
 
-    public function destroy($id): Response
+    public function destroy(Id $id): Response
     {
-        $result = $this->deleteEvent
-            ->execute($id);
-
-        return new Response(
-            [
-                'data' => $result->data,
-            ],
-            $result->code
+        return $this->response(
+            $this->deleteEvent
+                ->execute($id),
+                Response::HTTP_NO_CONTENT
         );
     }
 }
