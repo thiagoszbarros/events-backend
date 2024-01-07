@@ -13,6 +13,7 @@ class CPF implements ValidationRule
 
         if (strlen($cpfUnderValidation) != 11 || preg_match("/^{$cpfUnderValidation[0]}{11}$/", $cpfUnderValidation)) {
             $fail('O CPF fornecido não possui 11 dígitos válidos ou contém todos os números iguais.');
+
             return;
         }
 
@@ -20,6 +21,7 @@ class CPF implements ValidationRule
 
         if ($cpfUnderValidation[9] != ((($n %= 11) < 2) ? 0 : 11 - $n)) {
             $fail('O primeiro dígito verificador do CPF não está correto.');
+
             return;
         }
 

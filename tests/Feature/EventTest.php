@@ -36,8 +36,7 @@ class EventTest extends TestCase
 
         $this->assertIsObject($response->original['data']);
 
-
-        $response = $this->get("/api/events/abc");
+        $response = $this->get('/api/events/abc');
 
         $response->assertStatus(Response::HTTP_OK);
     }
@@ -97,7 +96,7 @@ class EventTest extends TestCase
             $endDate
         );
 
-        $response = $this->put("/api/events/abc", [
+        $response = $this->put('/api/events/abc', [
             'name' => $name,
             'start_date' => $startDate,
             'end_date' => $endDate,
@@ -110,7 +109,7 @@ class EventTest extends TestCase
     {
         $eventsBeforeNotDelete = Event::count();
 
-        $response = $this->delete("/api/events/abc");
+        $response = $this->delete('/api/events/abc');
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
 
@@ -119,7 +118,7 @@ class EventTest extends TestCase
             Event::count()
         );
 
-        $response = $this->delete("/api/events/abc123");
+        $response = $this->delete('/api/events/abc123');
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
 
@@ -129,7 +128,7 @@ class EventTest extends TestCase
         );
 
         $id = Event::factory()->create()->id;
-        
+
         $eventsBeforeDelete = Event::count();
 
         $response = $this->delete("/api/events/$id");
