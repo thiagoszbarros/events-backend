@@ -1,20 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Events;
 
+use App\Http\Requests\Id;
+use App\Services\Contract;
 use App\Interfaces\EventRepositoryInterface;
-use App\Shared\Dtos\ResultDto;
-use Illuminate\Http\Response;
 
-class FindEventById
+class FindEventById extends Contract
 {
     public function __construct(
         private EventRepositoryInterface $event,
     ) {
     }
 
-    public function execute(int $id): ResultDto
+    public function execute(Id $id): FindEventById
     {
-        return new ResultDto($this->event->findById($id), Response::HTTP_OK);
+        $this->data = $this->event->findById($id->value);
+        
+        return $this;
     }
 }

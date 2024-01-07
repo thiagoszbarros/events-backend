@@ -19,34 +19,27 @@ class EventTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
 
-        $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
+        $this->assertIsArray($response->original);
 
-        $this->assertSame(
-            'object',
-            gettype($response->original['data'])
-        );
+        $this->assertIsObject($response->original['data']);
     }
 
     public function test_show(): void
     {
         $id = Event::factory()->create()->id;
 
-        $response = $this->get('/api/events/'.$id);
+        $response = $this->get("/api/events/$id");
 
         $response->assertStatus(Response::HTTP_OK);
 
-        $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
+        $this->assertIsArray($response->original);
 
-        $this->assertSame(
-            'object',
-            gettype($response->original['data'])
-        );
+        $this->assertIsObject($response->original['data']);
+
+
+        $response = $this->get("/api/events/abc");
+
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     public function test_store(): void
@@ -60,20 +53,16 @@ class EventTest extends TestCase
 
         $response->assertStatus(Response::HTTP_CREATED);
 
-        $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
+        $this->assertIsArray($response->original);
 
-        $this->assertSame(
-            'string',
-            gettype($response->original['data'])
-        );
+        $this->assertIsString($response->original['message']);
 
         $this->assertSame(
             'Evento criado com sucesso.',
-            $response->original['data']
+            $response->original['message']
         );
+
+        $this->assertNull($response->original['data']);
     }
 
     public function test_update(): void
@@ -83,30 +72,15 @@ class EventTest extends TestCase
         $startDate = now()->addDays(11)->format('Y-m-d');
         $endDate = now()->addDays(13)->format('Y-m-d');
 
-        $response = $this->put('/api/events/'.$id, [
+        $response = $this->put("/api/events/$id", [
             'name' => $name,
             'start_date' => $startDate,
             'end_date' => $endDate,
         ]);
 
-        $response->assertStatus(Response::HTTP_OK);
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
 
         $updatedEvent = Event::find($id);
-
-        $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
-
-        $this->assertSame(
-            'string',
-            gettype($response->original['data'])
-        );
-
-        $this->assertSame(
-            'Evento atualizado com sucesso.',
-            $response->original['data']
-        );
 
         $this->assertSame(
             $updatedEvent->name,
@@ -122,34 +96,47 @@ class EventTest extends TestCase
             $updatedEvent->end_date,
             $endDate
         );
+
+        $response = $this->put("/api/events/abc", [
+            'name' => $name,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+        ]);
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
     }
 
-    public function test_detele(): void
+    public function test_delete(): void
     {
-        $id = Event::factory()->create()->id;
+        $eventsBeforeNotDelete = Event::count();
 
+        $response = $this->delete("/api/events/abc");
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+
+        $this->assertSame(
+            $eventsBeforeNotDelete,
+            Event::count()
+        );
+
+        $response = $this->delete("/api/events/abc123");
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+
+        $this->assertSame(
+            $eventsBeforeNotDelete,
+            Event::count()
+        );
+
+        $id = Event::factory()->create()->id;
+        
         $eventsBeforeDelete = Event::count();
 
         $response = $this->delete("/api/events/$id");
 
         $eventsAfterDelete = Event::count();
 
-        $response->assertStatus(Response::HTTP_OK);
-
-        $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
-
-        $this->assertSame(
-            'string',
-            gettype($response->original['data'])
-        );
-
-        $this->assertSame(
-            'Evento excluído com sucesso.',
-            $response->original['data']
-        );
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
 
         $this->assertSame(
             $eventsBeforeDelete - 1,
@@ -159,7 +146,7 @@ class EventTest extends TestCase
 
     public function test_subscribers(): void
     {
-        $eventId = strval(Event::factory()->create()->id);
+        $eventId = Event::factory()->create()->id;
         EventsSubscribers::create(
             [
                 'event_id' => $eventId,
@@ -167,19 +154,13 @@ class EventTest extends TestCase
             ]
         );
 
-        $response = $this->get("/api/events/$eventId/subscribers?event_id=$eventId");
+        $response = $this->get("/api/subscribers?event_id=$eventId");
 
         $response->assertStatus(Response::HTTP_OK);
 
-        $this->assertSame(
-            'array',
-            gettype($response->original)
-        );
+        $this->assertIsArray($response->original);
 
-        $this->assertSame(
-            'object',
-            gettype($response->original['data'])
-        );
+        $this->assertIsObject($response->original['data']);
 
         $this->assertTrue(count($response->original['data']) >= 1);
     }

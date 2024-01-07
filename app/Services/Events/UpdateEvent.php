@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace App\Services\Events;
 
-use App\Http\Requests\Events\UpdateEventRequest;
+use App\Http\Requests\Id;
+use App\Services\Contract;
 use App\Interfaces\EventRepositoryInterface;
-use App\Shared\Dtos\ResultDto;
-use Illuminate\Http\Response;
+use App\Http\Requests\Events\UpdateEventRequest;
 
-class UpdateEvent
+class UpdateEvent extends Contract
 {
     public function __construct(
         private EventRepositoryInterface $event,
     ) {
     }
 
-    public function execute(UpdateEventRequest $request, int $id): ResultDto
+    public function execute(UpdateEventRequest $request, Id $id): UpdateEvent
     {
         $this->event
-            ->update($request->validated(), $id);
+            ->update($request->validated(), $id->value);
 
-        return new ResultDto('Evento atualizado com sucesso.', Response::HTTP_OK);
+        return $this;
     }
 }

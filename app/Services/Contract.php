@@ -1,16 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Validations\Validation;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class Contract
 {
-    public bool $isValid = true;
+    protected bool $isValid = true;
 
-    public string $error = '';
+    private string $error = '';
 
-    public function validate(Validation $validation)
+    protected string $message = '';
+
+    protected Collection|Model|null $data = null;
+
+    protected function validate(Validation $validation): void
     {
         $this->isValid &&
             ! $validation->rule()() &&
@@ -21,5 +29,25 @@ abstract class Contract
     {
         $this->isValid = false;
         $this->error = $error;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->isValid;
+    }
+
+    public function getError(): string
+    {
+        return $this->error;
+    }
+
+    public function getData(): mixed
+    {
+        return $this->data;
+    }
+
+    public function getMessage(): mixed
+    {
+        return $this->message;
     }
 }

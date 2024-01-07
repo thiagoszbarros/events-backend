@@ -1,27 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Events;
 
-use App\Http\Requests\EventRequest;
+use App\Http\Requests\Events\CreateEventRequest;
 use App\Interfaces\EventRepositoryInterface;
-use App\Shared\Dtos\ResultDto;
-use Illuminate\Http\Response;
+use App\Services\Contract;
 
-class CreateEvent
+class CreateEvent extends Contract
 {
     public function __construct(
         private EventRepositoryInterface $event,
     ) {
     }
 
-    public function execute(EventRequest $request): ResultDto
+    public function execute(CreateEventRequest $request): CreateEvent
     {
         $this->event
-            ->create($request);
+            ->create([
+                ...$request->validated(),
+                ...['status' => true],
+            ]);
 
-        return new ResultDto(
-            'Evento criado com sucesso.',
-            Response::HTTP_CREATED
-        );
+        $this->message = 'Evento criado com sucesso.';
+
+        return $this;
     }
 }

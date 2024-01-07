@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Subscribers;
 
 use App\Interfaces\SubscriberRepositoryInterface;
 use App\Services\Contract;
-use App\Shared\Dtos\ResultDto;
-use Illuminate\Http\Response;
 
 class ListSubscribersByEvent extends Contract
 {
@@ -14,11 +14,10 @@ class ListSubscribersByEvent extends Contract
     ) {
     }
 
-    public function execute(int $eventId): ResultDto
+    public function execute(int $eventId): ListSubscribersByEvent
     {
-        return new ResultDto(
-            $this->subscriber->getByEventId($eventId),
-            Response::HTTP_OK
-        );
+        $this->data = $this->subscriber->getByEventId($eventId);
+        
+        return $this;
     }
 }
