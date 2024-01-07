@@ -6,7 +6,7 @@ namespace App\Repositories;
 
 use App\Interfaces\SubscriberRepositoryInterface;
 use App\Models\Subscriber;
-use App\ValueObjects\EventSubscrivers\EventSubscriberParams;
+use App\ValueObjects\Subscribers\FindSubscriberByIdOrCreateParams;
 use Illuminate\Database\Eloquent\Collection;
 
 class SubscriberRepository implements SubscriberRepositoryInterface
@@ -16,15 +16,15 @@ class SubscriberRepository implements SubscriberRepositoryInterface
     ) {
     }
 
-    public function store(EventSubscriberParams $subscriber): Subscriber
+    public function findSubscriberByIdOrCreate(FindSubscriberByIdOrCreateParams $params): Subscriber
     {
         return $this->subscriber::firstOrCreate(
             [
-                'email' => $subscriber->email,
+                'email' => $params->email,
             ],
             [
-                'name' => $subscriber->name,
-                'cpf' => $subscriber->cpf,
+                'name' => $params->name,
+                'cpf' => $params->cpf,
             ]
         );
     }
@@ -33,7 +33,7 @@ class SubscriberRepository implements SubscriberRepositoryInterface
     {
         return $this->subscriber::whereHas(
             'events',
-            function ($query) use ($eventId) {
+            function ($query) use ($eventId): void {
                 $query->where('events.id', $eventId);
             }
         )->get();

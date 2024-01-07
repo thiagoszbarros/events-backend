@@ -17,7 +17,7 @@ class Id extends Request
             'value' => [
                 'required',
                 'integer',
-            ]
+            ],
         ];
     }
 

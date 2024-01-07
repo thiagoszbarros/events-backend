@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Id;
-use Illuminate\Http\Response;
-use App\Services\Events\CreateEvent;
-use App\Services\Events\DeleteEvent;
-use App\Services\Events\UpdateEvent;
-use App\Services\Events\FindEventById;
-use App\Services\Events\GetActiveEvents;
 use App\Http\Requests\Events\CreateEventRequest;
 use App\Http\Requests\Events\UpdateEventRequest;
+use App\Http\Requests\Id;
+use App\Services\Events\CreateEvent;
+use App\Services\Events\DeleteEvent;
+use App\Services\Events\FindEventById;
+use App\Services\Events\GetActiveEvents;
+use App\Services\Events\UpdateEvent;
+use Illuminate\Http\Response;
 
 class EventController extends Controller
 {
@@ -65,7 +65,7 @@ class EventController extends Controller
         return $this->response(
             $this->deleteEvent
                 ->execute($id->value),
-                Response::HTTP_NO_CONTENT
+            Response::HTTP_NO_CONTENT
         );
     }
 }

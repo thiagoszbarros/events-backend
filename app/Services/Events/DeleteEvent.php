@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Events;
 
-use App\Services\Contract;
 use App\Interfaces\EventRepositoryInterface;
+use App\Services\Contract;
 
 class DeleteEvent extends Contract
 {

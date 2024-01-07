@@ -17,7 +17,7 @@ class ListSubscribersByEvent extends Contract
     public function execute(int $eventId): ListSubscribersByEvent
     {
         $this->data = $this->subscriber->getByEventId($eventId);
-        
+
         return $this;
     }
 }

@@ -33,11 +33,11 @@ Route::get('/', function (): array {
     ];
 });
 
-Route::any('{any}', function(): Response{
+Route::any('{any}', function (): Response {
     return new Response(
         [
             'message' => 'Parece que você está perdido... Rota não encontrada.',
-            'data' => null
+            'data' => null,
         ],
         Response::HTTP_NOT_FOUND
     );

@@ -38,7 +38,7 @@ class Controller extends BaseController
         return new Response(
             content: [
                 'message' => $message,
-                'data' => $data
+                'data' => $data,
             ],
             status: $status
         );
@@ -52,7 +52,7 @@ class Controller extends BaseController
         return new Response(
             content: [
                 'message' => $message,
-                'data' => $data
+                'data' => $data,
             ],
             status: $status,
         );
