@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Events;
 
-use App\Http\Requests\Events\CreateEventRequest;
 use App\Interfaces\EventRepositoryInterface;
 use App\Services\Contract;
 
@@ -15,11 +14,11 @@ class CreateEvent extends Contract
     ) {
     }
 
-    public function execute(CreateEventRequest $request): CreateEvent
+    public function execute(array $request): CreateEvent
     {
         $this->event
             ->create([
-                ...$request->validated(),
+                ...$request,
                 ...['status' => true],
             ]);
 

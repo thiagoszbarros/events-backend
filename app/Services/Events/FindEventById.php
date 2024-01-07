@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Events;
 
-use App\Http\Requests\Id;
 use App\Services\Contract;
 use App\Interfaces\EventRepositoryInterface;
 
@@ -15,9 +14,9 @@ class FindEventById extends Contract
     ) {
     }
 
-    public function execute(Id $id): FindEventById
+    public function execute(int $id): FindEventById
     {
-        $this->data = $this->event->findById($id->value);
+        $this->data = $this->event->findById($id);
         
         return $this;
     }

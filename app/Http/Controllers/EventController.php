@@ -36,7 +36,7 @@ class EventController extends Controller
     {
         return $this->response(
             $this->createEvent
-                ->execute($request),
+                ->execute($request->validated()),
             Response::HTTP_CREATED
         );
     }
@@ -45,7 +45,7 @@ class EventController extends Controller
     {
         return $this->response(
             $this->findEventById
-                ->execute($id)
+                ->execute($id->value)
         );
     }
 
@@ -53,8 +53,8 @@ class EventController extends Controller
     {
         return $this->response(
             $this->updateEvent->execute(
-                $request,
-                $id
+                $request->validated(),
+                $id->value
             ),
             Response::HTTP_NO_CONTENT
         );
@@ -64,7 +64,7 @@ class EventController extends Controller
     {
         return $this->response(
             $this->deleteEvent
-                ->execute($id),
+                ->execute($id->value),
                 Response::HTTP_NO_CONTENT
         );
     }
