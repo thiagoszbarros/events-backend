@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SubscriberRequest;
-use App\Http\Requests\SubscribersRequest;
+use App\Http\Requests\Subscribers\CreateSubscriberRequest;
+use App\Http\Requests\Subscribers\ListSubscribersByEventRequest;
 use App\Services\Subscribers\CreateSubscriber;
 use App\Services\Subscribers\ListSubscribersByEvent;
 use Illuminate\Http\Response;
@@ -16,29 +18,20 @@ class SubscriberController extends Controller
     ) {
     }
 
-    public function index(SubscribersRequest $request): Response
+    public function index(ListSubscribersByEventRequest $request): Response
     {
-        $result = $this->listSubscribersByEvent
-            ->execute($request->event_id);
-
-        return new Response(
-            [
-                'data' => $result->data,
-            ],
-            $result->code
+        return $this->response(
+            contract: $this->listSubscribersByEvent
+                ->execute(intval($request->event_id))
         );
     }
 
-    public function store(SubscriberRequest $request): Response
+    public function store(CreateSubscriberRequest $request): Response
     {
-        $result = $this->createSubscriber
-            ->execute($request);
-
-        return new Response(
-            [
-                'data' => $result->data,
-            ],
-            $result->code
+        return $this->response(
+            contract: $this->createSubscriber
+                ->execute($request),
+            status: Response::HTTP_CREATED
         );
     }
 }
