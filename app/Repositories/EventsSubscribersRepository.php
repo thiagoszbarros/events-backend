@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Interfaces\EventsSubscribersRepositoryInterface;
@@ -13,9 +15,9 @@ class EventsSubscribersRepository implements EventsSubscribersRepositoryInterfac
     }
 
     public function findByEventIdAndSubscriverId(
-        $eventId,
-        $subscriberId
-    ): ?object {
+        int $eventId,
+        int $subscriberId
+    ): ?EventsSubscribers {
         return $this->eventSubscriber
             ->whereEventIdAndSubscriberId(
                 $eventId,
@@ -25,8 +27,8 @@ class EventsSubscribersRepository implements EventsSubscribersRepositoryInterfac
     }
 
     public function createEventSubscriber(
-        string $eventId,
-        string $subscriberId
+        int $eventId,
+        int $subscriberId
     ): void {
         $this->eventSubscriber::create(
             [

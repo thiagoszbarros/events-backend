@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Interfaces\EventRepositoryInterface;
 use App\Models\Event;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
 class EventRepository implements EventRepositoryInterface
@@ -21,23 +22,16 @@ class EventRepository implements EventRepositoryInterface
         )->get();
     }
 
-    public function findById(string $id): ?Event
+    public function findById(int $id): ?Event
     {
         return $this->event
             ->find($id);
     }
 
-    public function create(object $event): Event|false
+    public function create(array $event): Event|false
     {
         return $this->event
-            ->create(
-                [
-                    'name' => $event->name,
-                    'start_date' => Carbon::createFromFormat('Y-m-d', $event->start_date),
-                    'end_date' => Carbon::createFromFormat('Y-m-d', $event->end_date),
-                    'status' => 1,
-                ]
-            );
+            ->create($event);
     }
 
     public function update(array $event, int $id): void
@@ -47,12 +41,12 @@ class EventRepository implements EventRepositoryInterface
             ->update($event);
     }
 
-    public function delete(string $id): void
+    public function delete(int $id): void
     {
         $this->event->destroy($id);
     }
 
-    public function hasDateConflict(string $eventId, string $subscriberId): bool
+    public function hasDateConflict(int $eventId, int $subscriberId): bool
     {
         $eventToCheck = $this->event::find($eventId);
 

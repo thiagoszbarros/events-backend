@@ -11,9 +11,11 @@ class HandlerTest extends TestCase
         $response = $this->get('api/handlerTest');
 
         $response->assertInternalServerError();
+        $this->assertIsString($response->original['message']);
         $this->assertSame(
-            $response->original['data'],
+            $response->original['message'],
             'Opa! Esse teste passou.'
         );
+        $this->assertNull($response->original['data']);
     }
 }

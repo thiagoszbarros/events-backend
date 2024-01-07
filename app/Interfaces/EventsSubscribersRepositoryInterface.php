@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Interfaces;
+
+use App\Models\EventsSubscribers;
 
 interface EventsSubscribersRepositoryInterface
 {
-    public function findByEventIdAndSubscriverId(string $eventId, string $subscriberId): ?object;
+    public function findByEventIdAndSubscriverId(int $eventId, int $subscriberId): ?EventsSubscribers;
 
-    public function createEventSubscriber(string $eventId, string $subscriberId): void;
+    public function createEventSubscriber(int $eventId, int $subscriberId): void;
 }

@@ -1,18 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Subscribers;
 
-use App\Http\Requests\SubscriberRequest;
+use App\Http\Requests\Subscribers\CreateSubscriberRequest;
 use App\Interfaces\EventRepositoryInterface;
 use App\Interfaces\SubscriberRepositoryInterface;
 use App\Repositories\EventsSubscribersRepository;
 use App\Services\Contract;
-use App\Shared\Dtos\ResultDto;
 use App\Validations\EventSubscribers\CantBeAlreadySubscribed;
 use App\Validations\EventSubscribers\CantSubscribeTwoEventsAtSameTime;
 use App\Validations\EventSubscribers\EventShouldBeActive;
 use App\ValueObjects\EventSubscrivers\EventSubscriberParams;
-use Illuminate\Http\Response;
 
 class CreateSubscriber extends Contract
 {
@@ -23,10 +23,10 @@ class CreateSubscriber extends Contract
     ) {
     }
 
-    public function execute(SubscriberRequest $request): object
+    public function execute(CreateSubscriberRequest $request): CreateSubscriber
     {
         $event = $this->eventRepository
-            ->findById($request->event_id);
+            ->findById(intval($request->event_id));
 
         $this->validate(
             new EventShouldBeActive(status: $event?->status)
@@ -56,10 +56,7 @@ class CreateSubscriber extends Contract
         );
 
         if (! $this->isValid) {
-            return new ResultDto(
-                $this->error,
-                Response::HTTP_BAD_REQUEST
-            );
+            return $this;
         }
 
         $this->eventsSubscribersRepository->createEventSubscriber(
@@ -67,9 +64,8 @@ class CreateSubscriber extends Contract
             $subscriber->id
         );
 
-        return new ResultDto(
-            'Inscrição realizada com sucesso.',
-            Response::HTTP_CREATED
-        );
+        $this->message = 'Inscrição realizada com sucesso.';
+
+        return $this;
     }
 }

@@ -1,23 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Events;
 
+use App\Http\Requests\Id;
+use App\Services\Contract;
 use App\Interfaces\EventRepositoryInterface;
-use App\Shared\Dtos\ResultDto;
-use Illuminate\Http\Response;
 
-class DeleteEvent
+class DeleteEvent extends Contract
 {
     public function __construct(
         private EventRepositoryInterface $event,
     ) {
     }
 
-    public function execute($id): ResultDto
+    public function execute(Id $id): DeleteEvent
     {
         $this->event
-            ->delete($id);
+            ->delete($id->value);
 
-        return new ResultDto('Evento excluído com sucesso.', Response::HTTP_OK);
+        return $this;
     }
 }

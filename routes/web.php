@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (): array {
     return [
         'name' => 'thiagoszbarros/events-backend',
         'type' => 'project',
@@ -31,3 +32,13 @@ Route::get('/', function () {
         'laravel' => app()->version(),
     ];
 });
+
+Route::any('{any}', function(): Response{
+    return new Response(
+        [
+            'message' => 'Parece que você está perdido... Rota não encontrada.',
+            'data' => null
+        ],
+        Response::HTTP_NOT_FOUND
+    );
+})->where('any', '.*');

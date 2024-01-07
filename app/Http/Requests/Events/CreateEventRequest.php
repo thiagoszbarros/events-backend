@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Events;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Request;
 
 class CreateEventRequest extends Request
 {

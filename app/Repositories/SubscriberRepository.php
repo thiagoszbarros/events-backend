@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Interfaces\SubscriberRepositoryInterface;
@@ -27,7 +29,7 @@ class SubscriberRepository implements SubscriberRepositoryInterface
         );
     }
 
-    public function getByEventId(string $eventId): Collection
+    public function getByEventId(int $eventId): Collection
     {
         return $this->subscriber::whereHas(
             'events',
