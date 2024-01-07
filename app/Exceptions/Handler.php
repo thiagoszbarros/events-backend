@@ -37,7 +37,8 @@ class Handler extends ExceptionHandler
         if (env('APP_ENV') === 'local' || env('APP_ENV') === 'testing') {
             return new Response(
                 [
-                    'data' => $exception->getMessage(),
+                    'message' => $exception->getMessage(),
+                    'data' => null,
                 ],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -46,7 +47,8 @@ class Handler extends ExceptionHandler
         // @codeCoverageIgnoreStart
         return new Response(
             [
-                'data' => 'Opa! Algo deu errado. Tente novamente mais tarde.',
+                'message' => 'Opa! Algo deu errado. Tente novamente mais tarde.',
+                'data' => null,
             ],
             Response::HTTP_INTERNAL_SERVER_ERROR
         );
