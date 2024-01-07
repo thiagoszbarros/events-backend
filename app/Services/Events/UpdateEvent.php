@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Events;
 
-use App\Http\Requests\Id;
 use App\Services\Contract;
 use App\Interfaces\EventRepositoryInterface;
-use App\Http\Requests\Events\UpdateEventRequest;
 
 class UpdateEvent extends Contract
 {
@@ -16,10 +14,10 @@ class UpdateEvent extends Contract
     ) {
     }
 
-    public function execute(UpdateEventRequest $request, Id $id): UpdateEvent
+    public function execute(array $request, int $id): UpdateEvent
     {
         $this->event
-            ->update($request->validated(), $id->value);
+            ->update($request, $id);
 
         return $this;
     }
