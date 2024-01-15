@@ -57,7 +57,7 @@ class DoSubscription extends Contract
             )
         );
 
-        if (!$this->isValid) {
+        if (! $this->isValid) {
             return $this;
         }
 
