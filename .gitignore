@@ -17,6 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /coverage
+composer.lock
 
 /docker/postgres/database
 --cache-directory=
